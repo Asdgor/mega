@@ -293,3 +293,10 @@ function updateOnlineStatus() {
         statusElement.style.color = isOnline ? '#4CAF50' : '#666';
     }
 }
+// Прогресс-бар навыков
+function initSkillBars() {
+    document.querySelectorAll('.skill-bar').forEach(bar => {
+        const percent = bar.getAttribute('data-percent');
+        bar.style.width = percent + '%';
+    });
+}
