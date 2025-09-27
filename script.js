@@ -1,4 +1,18 @@
-// Кастомный курсор
+// ФИКС: Мобильное меню
+function initMobileMenu() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            navActions.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+    }
+}// Кастомный курсор
 document.addEventListener('mousemove', (e) => {
     const cursor = document.querySelector('.cursor');
     cursor.style.left = e.clientX + 'px';
