@@ -380,3 +380,16 @@ function validateEmail(email) {
 function logSecurityEvent(event) {
     console.log(`🔒 Security Event: ${event} at ${new Date().toLocaleString()}`);
 }
+// Инициализация всего при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    initMobileMenu();          // Мобильное меню
+    initContactForm();         // Форма обратной связи
+    initLanguage();            // Язык
+    initAnimations();          // Анимации
+    
+    // Показываем что сайт загрузился
+    console.log('🚀 Sy1ka Portfolio loaded successfully!');
+    
+    // Защита - логируем загрузку
+    logSecurityEvent('Page loaded');
+});
