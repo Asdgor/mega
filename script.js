@@ -240,3 +240,47 @@ function initMobileMenu() {
     padding: 2rem;
     gap: 1rem;
 }
+// Отправка в Telegram
+async function sendToTelegram(formData) {
+    const BOT_TOKEN = '7108612353:AAHjqj8v9J6p5n8Y7R6XzVwQnL_mB7n8Y7k'; // Замени на свой
+    const CHAT_ID = '704885434'; // Замени на свой chat_id
+    
+    const message = `📧 Новая заявка!\n\n👤 Имя: ${formData.name}\n📧 Email: ${formData.email}\n💼 Проект: ${formData.project}\n\n🕒 ${new Date().toLocaleString()}`;
+    
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+        
+        return response.ok;
+    } catch (error) {
+        console.error('Ошибка отправки:', error);
+        return false;
+    }
+}
+
+// Обработка формы
+document.getElementById('project-form')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        name: this.querySelector('input[type="text"]').value,
+        email: this.querySelector('input[type="email"]').value,
+        project: this.querySelector('textarea').value
+    };
+    
+    const success = await sendToTelegram(formData);
+    
+    if (success) {
+        alert('✅ Сообщение отправлено! Свяжусь с вами в течение 24 часов.');
+        this.reset();
+    } else {
+        alert('❌ Ошибка отправки. Напишите мне напрямую в Telegram: @sy1ka');
+    }
+});
