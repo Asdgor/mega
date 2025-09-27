@@ -284,3 +284,12 @@ document.getElementById('project-form')?.addEventListener('submit', async functi
         alert('❌ Ошибка отправки. Напишите мне напрямую в Telegram: @sy1ka');
     }
 });
+// Показывает, когда ты онлайн
+function updateOnlineStatus() {
+    const statusElement = document.getElementById('online-status');
+    if (statusElement) {
+        const isOnline = Math.random() > 0.3; // 70% шанс быть онлайн
+        statusElement.textContent = isOnline ? '🟢 Онлайн' : '⚫ Офлайн';
+        statusElement.style.color = isOnline ? '#4CAF50' : '#666';
+    }
+}
