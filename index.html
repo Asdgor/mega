@@ -3,270 +3,689 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sy1ka | Элитная веб-разработка</title>
-    <meta name="description" content="Эксклюзивные цифровые решения премиум-класса. Создаю сайты, от которых захватывает дух.">
+    <title>Sy1ka | Премиум веб-разработка</title>
+    <meta name="description" content="Создаю сайты, которые впечатляют и приносят результат. Современный дизайн, чистейший код, гарантия качества.">
     
-    <!-- Preload -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    
-    <!-- Fonts -->
+    <!-- Шрифты -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Icons -->
+    <!-- Иконки -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* CRITICAL CSS - то что видно сразу */
+        /* БАЗОВЫЕ СТИЛИ */
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
             --accent: #f59e0b;
             --dark: #0f172a;
-            --light: #f8fafc;
-            --text: #1e293b;
+            --light: #ffffff;
+            --gray: #64748b;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
         body {
             font-family: 'Inter', sans-serif;
             background: var(--light);
-            color: var(--text);
+            color: var(--dark);
+            line-height: 1.6;
             overflow-x: hidden;
         }
         
-        /* Лоадер с анимацией */
-        #loader {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ХЕДЕР */
+        .header {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--dark);
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            z-index: 9999;
         }
         
-        .loader-content {
-            text-align: center;
-        }
-        
-        .loader-logo {
-            font-size: 4rem;
+        .logo {
+            font-size: 1.8rem;
             font-weight: 900;
             background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
         }
         
-        .loader-bar {
-            width: 200px;
-            height: 3px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--dark);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* ГЕРОЙ СЕКЦИЯ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            position: relative;
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        /* СЕКЦИЯ РАБОТ */
+        .portfolio {
+            padding: 100px 0;
+            background: #f8fafc;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
             overflow: hidden;
         }
         
-        .loader-progress {
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            width: 0%;
-            animation: loading 2s ease-in-out;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        @keyframes loading {
-            0% { width: 0%; }
-            100% { width: 100%; }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .view-project {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .project-content {
+            padding: 2rem;
+        }
+        
+        .project-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .project-content p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tech-tag {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* КОНТАКТЫ */
+        .contact {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .contact-info h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .contact-link:hover {
+            color: var(--primary);
+        }
+        
+        .contact-form {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        /* ФУТЕР */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+        }
+        
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* АНИМАЦИИ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <!-- Прелоадер -->
-    <div id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">SY1KA</div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
+    <!-- ХЕДЕР -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">SY1KA</div>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Главная</a>
+                <a href="#portfolio" class="nav-link">Портфолио</a>
+                <a href="#services" class="nav-link">Услуги</a>
+                <a href="#process" class="nav-link">Процесс</a>
+                <a href="#contact" class="nav-link">Контакты</a>
             </div>
-        </div>
-    </div>
+            
+            <a href="https://t.me/sy1ka" class="cta-button" target="_blank">
+                <i class="fab fa-telegram"></i> Обсудить проект
+            </a>
+        </nav>
+    </header>
 
-    <!-- Основной контент -->
-    <div id="main-content" style="display: none;">
-        <!-- Курсор-круг -->
-        <div class="cursor"></div>
-        
-        <!-- Хедер с стеклянным эффектом -->
-        <header class="header">
-            <nav class="nav container">
-                <div class="logo" data-text="SY1KA">SY1KA</div>
+    <!-- ГЕРОЙ СЕКЦИЯ -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Создаю цифровые продукты, которые продают
+                </h1>
                 
-                <div class="nav-links">
-                    <a href="#home" class="nav-link" data-hover="Главная">Главная</a>
-                    <a href="#portfolio" class="nav-link" data-hover="Портфолио">Портфолио</a>
-                    <a href="#services" class="nav-link" data-hover="Услуги">Услуги</a>
-                    <a href="#process" class="nav-link" data-hover="Процесс">Процесс</a>
-                    <a href="#contact" class="nav-link" data-hover="Контакты">Контакты</a>
-                </div>
+                <p class="hero-description">
+                    Веб-разработка премиум-класса с фокусом на результат. 
+                    Превращаю ваши идеи в работающие бизнес-инструменты, 
+                    которые увеличивают конверсию и выделяют бренд.
+                </p>
                 
-                <div class="nav-actions">
-                    <div class="theme-switcher">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                    <a href="https://t.me/sy1ka" class="cta-button magnetic-btn" target="_blank">
-                        <span class="btn-text">Обсудить проект</span>
-                        <div class="btn-hover"></div>
+                <div class="hero-actions">
+                    <a href="#portfolio" class="btn btn-primary">
+                        <i class="fas fa-eye"></i>
+                        Смотреть портфолио
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-play"></i>
+                        Видео-презентация
                     </a>
                 </div>
                 
-                <div class="mobile-menu-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">47</span>
+                        <span class="stat-label">успешных проектов</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">98%</span>
+                        <span class="stat-label">довольных клиентов</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2.5к</span>
+                        <span class="stat-label">часов опыта</span>
+                    </div>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </div>
+    </section>
 
-        <!-- Герой секция с параллаксом -->
-        <section id="home" class="hero">
-            <div class="hero-bg">
-                <div class="bg-shape shape-1"></div>
-                <div class="bg-shape shape-2"></div>
-                <div class="bg-shape shape-3"></div>
+    <!-- ПОРТФОЛИО -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Мои работы</h2>
+                <p class="section-subtitle">Реальные проекты с измеримыми результатами</p>
             </div>
             
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        <span>🎯 Доступен для новых проектов</span>
-                    </div>
-                    
-                    <h1 class="hero-title">
-                        <span class="title-line">Создаю цифровые</span>
-                        <span class="title-line">
-                            <span class="typing-text">шедевры</span>
-                            <span class="cursor-blinking">|</span>
-                        </span>
-                        <span class="title-line">которые продают</span>
-                    </h1>
-                    
-                    <p class="hero-description">
-                        Эксклюзивная веб-разработка премиум-класса. Превращаю ваши идеи в цифровые продукты, 
-                        которые выделяют бренд и увеличивают конверсию на 300%.
-                    </p>
-                    
-                    <div class="hero-actions">
-                        <a href="#portfolio" class="btn btn-primary magnetic-btn">
-                            <span>Смотреть портфолио</span>
-                            <i class="fas fa-arrow-down"></i>
-                        </a>
-                        <a href="#contact" class="btn btn-secondary">
-                            <i class="fas fa-play"></i>
-                            <span>Смотреть видео-презентацию</span>
-                        </a>
-                    </div>
-                    
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <div class="stat-number" data-count="47">0</div>
-                            <div class="stat-label">успешных проектов</div>
+            <div class="portfolio-grid">
+                <!-- Проект 1 -->
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <button class="view-project">Смотреть кейс</button>
                         </div>
-                        <div class="stat">
-                            <div class="stat-number" data-count="98">0</div>
-                            <div class="stat-label">довольных клиентов</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-number" data-count="2563">0</div>
-                            <div class="stat-label">часов опыта</div>
+                        🛒
+                    </div>
+                    <div class="project-content">
+                        <h3>Премиум лендинг для ювелирного бренда</h3>
+                        <p>Конверсия увеличена на 250%, средний чек вырос на 40% за счет уникального дизайна и UX</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">GSAP</span>
+                            <span class="tech-tag">Three.js</span>
                         </div>
                     </div>
                 </div>
                 
-                <div class="hero-visual">
-                    <div class="floating-card card-1">
-                        <i class="fas fa-bolt"></i>
-                        <span>Скорость</span>
+                <!-- Проект 2 -->
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <button class="view-project">Смотреть кейс</button>
+                        </div>
+                        🏢
                     </div>
-                    <div class="floating-card card-2">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>Адаптив</span>
+                    <div class="project-content">
+                        <h3>Корпоративная экосистема</h3>
+                        <p>Автоматизация 80% бизнес-процессов, экономия 200+ рабочих часов в месяц</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Vue.js</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
                     </div>
-                    <div class="floating-card card-3">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Результат</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="scroll-indicator">
-                <div class="mouse">
-                    <div class="wheel"></div>
-                </div>
-                <span>Листайте для магии</span>
-            </div>
-        </section>
-
-        <!-- Секция портфолио с 3D эффектами -->
-        <section id="portfolio" class="portfolio">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Избранные работы</h2>
-                    <p>Проекты, которые изменили бизнес клиентов</p>
                 </div>
                 
-                <div class="portfolio-grid">
-                    <!-- Проект 1 -->
-                    <div class="project-card" data-project="1">
-                        <div class="project-image">
-                            <div class="project-overlay">
-                                <button class="view-project">Смотреть кейс</button>
-                            </div>
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236366f1'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EПремиум лендинг%3C/text%3E%3C/svg%3E" alt="Премиум лендинг">
+                <!-- Проект 3 -->
+                <div class="project-card fade-in">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <button class="view-project">Смотреть кейс</button>
                         </div>
-                        <div class="project-content">
-                            <h3>Элитный лендинг для ювелирного бренда</h3>
-                            <p>Конверсия увеличена на 250%, средний чек вырос на 40%</p>
-                            <div class="project-tech">
-                                <span>React</span>
-                                <span>Three.js</span>
-                                <span>GSAP</span>
-                            </div>
-                        </div>
+                        📊
                     </div>
-                    
-                    <!-- Проект 2 -->
-                    <div class="project-card" data-project="2">
-                        <div class="project-image">
-                            <div class="project-overlay">
-                                <button class="view-project">Смотреть кейс</button>
-                            </div>
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f59e0b'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EКорпоративный портал%3C/text%3E%3C/svg%3E" alt="Корпоративный портал">
-                        </div>
-                        <div class="project-content">
-                            <h3>Корпоративная экосистема для IT-компании</h3>
-                            <p>Автоматизация 80% процессов, экономия 200+ часов в месяц</p>
-                            <div class="project-tech">
-                                <span>Vue.js</span>
-                                <span>Node.js</span>
-                                <span>WebSocket</span>
-                            </div>
+                    <div class="project-content">
+                        <h3>Дашборд аналитики в реальном времени</h3>
+                        <p>Визуализация big data с возможностью прогнозирования трендов</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">D3.js</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">WebSocket</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- И еще много крутых секций... -->
-    </div>
+    <!-- КОНТАКТЫ -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Готовы создать что-то великое?</h2>
+                    <p>Обсудим ваш проект и найдем оптимальное решение для роста вашего бизнеса</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://t.me/sy1ka" class="contact-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            Telegram: @sy1ka
+                        </a>
+                        <a href="mailto:hello@sy1ka.ru" class="contact-link">
+                            <i class="fas fa-envelope"></i>
+                            Email: hello@sy1ka.ru
+                        </a>
+                        <div class="contact-link">
+                            <i class="fas fa-clock"></i>
+                            Время ответа: 2-3 часа
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email для связи" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Расскажите о вашем проекте..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i>
+                        Отправить заявку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-    <!-- Подгружаемые стили -->
-    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
-    
-    <!-- Скрипты -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-    <script src="app.js" defer></script>
+    <!-- ФУТЕР -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Sy1ka. Профессиональная веб-разработка премиум-класса</p>
+            <p style="margin-top: 1rem; opacity: 0.8;">Создано с вниманием к деталям и страстью к инновациям</p>
+        </div>
+    </footer>
+
+    <script>
+        // ПРОСТОЙ И РАБОЧИЙ СКРИПТ
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Сайт Sy1ka загружен мгновенно!');
+            
+            // Плавная прокрутка
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Анимация появления элементов при скролле
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Обработка формы
+            document.querySelector('.contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('✅ Спасибо! Я свяжусь с вами в течение 2 часов для обсуждения проекта.');
+                this.reset();
+            });
+            
+            // Изменение хедера при скролле
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
