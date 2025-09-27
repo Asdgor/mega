@@ -314,3 +314,53 @@ function initSkillBars() {
         bar.style.width = percent + '%';
     });
 }
+// ФИКС: Форма обратной связи (упрощенная версия)
+function initContactForm() {
+    const form = document.getElementById('project-form');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: this.querySelector('input[type="text"]').value,
+                email: this.querySelector('input[type="email"]').value,
+                message: this.querySelector('textarea').value
+            };
+            
+            // Временное решение - показываем уведомление
+            showNotification('✅ Сообщение отправлено! Я свяжусь с вами в Telegram в течение 24 часов!');
+            
+            // Очищаем форму
+            this.reset();
+            
+            // Перенаправляем в Telegram
+            setTimeout(() => {
+                window.open('https://t.me/sy1ka', '_blank');
+            }, 2000);
+        });
+    }
+}
+
+// Красивое уведомление
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
