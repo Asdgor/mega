@@ -1,395 +1,324 @@
-// ФИКС: Мобильное меню
-function initMobileMenu() {
-    const menuBtn = document.querySelector('.menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const navActions = document.querySelector('.nav-actions');
-    
-    if (menuBtn) {
-        menuBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            navActions.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-        });
+// Main application
+class PortfolioApp {
+    constructor() {
+        this.init();
     }
-}// Кастомный курсор
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.querySelector('.cursor');
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
 
-document.addEventListener('mousedown', () => {
-    const cursor = document.querySelector('.cursor');
-    cursor.style.transform = 'scale(0.8)';
-});
-
-document.addEventListener('mouseup', () => {
-    const cursor = document.querySelector('.cursor');
-    cursor.style.transform = 'scale(1)';
-});
-
-// Меняющийся текст
-const typingTexts = [
-    "впечатляют",
-    "продают", 
-    "работают",
-    "выделяются",
-    "конвертируют"
-];
-
-let currentTextIndex = 0;
-const typingElement = document.querySelector('.typing-text');
-const cursorElement = document.querySelector('.cursor-blinking');
-
-function typeText() {
-    const text = typingTexts[currentTextIndex];
-    let charIndex = 0;
-    
-    typingElement.textContent = '';
-    cursorElement.style.opacity = '1';
-    
-    const typingInterval = setInterval(() => {
-        typingElement.textContent += text[charIndex];
-        charIndex++;
+    init() {
+        this.initMobileMenu();
+        this.initSmoothScroll();
+        this.initProjectModals();
+        this.initContactForm();
+        this.initLanguage();
+        this.initAnimations();
+        this.initTypingEffect();
         
-        if (charIndex === text.length) {
-            clearInterval(typingInterval);
-            setTimeout(eraseText, 2000);
-        }
-    }, 100);
-}
+        console.log('🚀 Portfolio App initialized!');
+    }
 
-function eraseText() {
-    const text = typingElement.textContent;
-    let charIndex = text.length - 1;
-    
-    const eraseInterval = setInterval(() => {
-        typingElement.textContent = text.substring(0, charIndex);
-        charIndex--;
-        
-        if (charIndex < 0) {
-            clearInterval(eraseInterval);
-            currentTextIndex = (currentTextIndex + 1) % typingTexts.length;
-            setTimeout(typeText, 500);
-        }
-    }, 50);
-}
+    // Mobile menu
+    initMobileMenu() {
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const navActions = document.querySelector('.nav-actions');
 
-// Плавная прокрутка
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+        if (menuBtn) {
+            menuBtn.addEventListener('click', () => {
+                menuBtn.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                navActions.classList.toggle('active');
+                document.body.style.overflow = 
+                    document.body.style.overflow === 'hidden' ? 'auto' : 'hidden';
+            });
+
+            // Close menu when clicking on links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    navActions.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
             });
         }
-    });
-});
-
-// Анимация при прокрутке
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Форма обратной связи
-document.getElementById('project-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Здесь можно добавить отправку на email или Telegram
-    const formData = new FormData(this);
-    const name = formData.get('name') || 'Пользователь';
-    
-    // Просто показываем уведомление
-    alert(`Спасибо, ${name}! Я свяжусь с вами в течение 24 часов!`);
-    this.reset();
-});
-
-// Инициализация
-document.addEventListener('DOMContentLoaded', function() {
-    // Запускаем печатающий текст
-    setTimeout(typeText, 1000);
-    
-    // Наблюдаем за элементами для анимации
-    document.querySelectorAll('.work-card, .tech-item, .contact-form').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'all 0.6s ease';
-        observer.observe(el);
-    });
-    
-    // Плавное появление страницы
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
-    
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-// Изменение хедера при прокрутке
-window.addEventListener('scroll', function() {
-    const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(10, 10, 10, 0.98)';
-        header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
-    } else {
-        header.style.background = 'rgba(10, 10, 10, 0.9)';
-        header.style.boxShadow = 'none';
     }
-});
-// Данные проектов
-const projects = [
-    {
-        id: 1,
-        title: "E-commerce платформа",
-        description: "Полнофункциональный интернет-магазин с корзиной, фильтрами и системой оплаты. Адаптивный дизайн, быстрая загрузка, SEO-оптимизация.",
-        tech: ["HTML/CSS", "JavaScript", "React", "Node.js"],
-        image: "project1.jpg",
-        link: "#"
-    },
-    {
-        id: 2, 
-        title: "Корпоративный портал",
-        description: "Сайт для строительной компании с каталогом услуг, формой заявок и административной панелью для управления контентом.",
-        tech: ["Vue.js", "PHP", "MySQL", "API"],
-        image: "project2.jpg", 
-        link: "#"
-    }
-];
 
-// Открытие модалки
-function openProjectModal(projectId) {
-    const project = projects.find(p => p.id === projectId);
-    const modal = document.getElementById('project-modal');
-    
-    if (project) {
-        document.getElementById('modal-title').textContent = project.title;
-        document.getElementById('modal-description').textContent = project.description;
-        document.getElementById('modal-img').src = project.image;
-        document.getElementById('modal-link').href = project.link;
-        
-        // Технологии
-        const techContainer = document.getElementById('modal-tech');
-        techContainer.innerHTML = '';
-        project.tech.forEach(tech => {
-            const span = document.createElement('span');
-            span.textContent = tech;
-            techContainer.appendChild(span);
+    // Smooth scroll
+    initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
+    }
+
+    // Project modals
+    initProjectModals() {
+        const projects = {
+            1: {
+                title: "Интернет-магазин",
+                description: "Полнофункциональный интернет-магазин с корзиной, фильтрами товаров и системой оплаты. Адаптивный дизайн, быстрая загрузка, SEO-оптимизация. Интеграция с платежными системами и CRM.",
+                tech: ["HTML5", "CSS3", "JavaScript", "React", "Node.js", "MongoDB"],
+                placeholder: "🛒"
+            },
+            2: {
+                title: "Корпоративный сайт",
+                description: "Сайт для строительной компании с каталогом услуг, формой заявок и административной панелью. Современный дизайн, система управления контентом, интеграция с Google Maps.",
+                tech: ["Vue.js", "PHP", "MySQL", "REST API", "Figma"],
+                placeholder: "🏢"
+            },
+            3: {
+                title: "Образовательная платформа",
+                description: "Платформа для онлайн-курсов с личным кабинетом, системой прогресса и видеоплеером. Адаптивная верстка, интерактивные элементы, система тестирования и сертификации.",
+                tech: ["React", "TypeScript", "Firebase", "GSAP", "SCSS"],
+                placeholder: "🎓"
+            }
+        };
+
+        // Open modal
+        document.querySelectorAll('.work-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const projectId = card.dataset.project;
+                const project = projects[projectId];
+                
+                if (project) {
+                    this.openProjectModal(project);
+                }
+            });
+        });
+
+        // Close modal
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            this.closeModal();
+        });
+
+        // Close on backdrop click
+        document.getElementById('project-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'project-modal') {
+                this.closeModal();
+            }
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeModal();
+            }
+        });
+    }
+
+    openProjectModal(project) {
+        const modal = document.getElementById('project-modal');
+        const placeholder = document.getElementById('modal-placeholder');
+        const title = document.getElementById('modal-title');
+        const description = document.getElementById('modal-description');
+        const tech = document.getElementById('modal-tech');
+
+        placeholder.textContent = project.placeholder;
+        title.textContent = project.title;
+        description.textContent = project.description;
         
+        tech.innerHTML = '';
+        project.tech.forEach(techName => {
+            const span = document.createElement('span');
+            span.textContent = techName;
+            tech.appendChild(span);
+        });
+
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
-}
 
-// Закрытие модалки
-function closeModal() {
-    document.getElementById('project-modal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-// Закрытие по клику вне модалки
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('project-modal');
-    if (event.target === modal) {
-        closeModal();
+    closeModal() {
+        document.getElementById('project-modal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
-});
 
-// Закрытие по ESC
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeModal();
-    }
-});
-// Мобильное меню
-function initMobileMenu() {
-    const menuBtn = document.querySelector('.menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const navActions = document.querySelector('.nav-actions');
-    
-    if (menuBtn) {
-        menuBtn.addEventListener('click', () => {
-            menuBtn.classList.toggle('active');
-            navLinks.classList.toggle('active');
-            navActions.classList.toggle('active');
-            document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden';
-        });
-    }
-}
-
-// В CSS добавляем:
-.menu-btn.active span:nth-child(1) { 
-    transform: rotate(45deg) translate(5px, 5px); 
-}
-.menu-btn.active span:nth-child(2) { 
-    opacity: 0; 
-}
-.menu-btn.active span:nth-child(3) { 
-    transform: rotate(-45deg) translate(7px, -6px); 
-}
-
-.nav-links.active, .nav-actions.active {
-    display: flex !important;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--bg-secondary);
-    padding: 2rem;
-    gap: 1rem;
-}
-// Отправка в Telegram
-async function sendToTelegram(formData) {
-    const BOT_TOKEN = '7108612353:AAHjqj8v9J6p5n8Y7R6XzVwQnL_mB7n8Y7k'; // Замени на свой
-    const CHAT_ID = '704885434'; // Замени на свой chat_id
-    
-    const message = `📧 Новая заявка!\n\n👤 Имя: ${formData.name}\n📧 Email: ${formData.email}\n💼 Проект: ${formData.project}\n\n🕒 ${new Date().toLocaleString()}`;
-    
-    try {
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: message,
-                parse_mode: 'HTML'
-            })
-        });
+    // Contact form
+    initContactForm() {
+        const form = document.getElementById('project-form');
         
-        return response.ok;
-    } catch (error) {
-        console.error('Ошибка отправки:', error);
-        return false;
-    }
-}
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const data = {
+                    name: form.querySelector('input[type="text"]').value,
+                    email: form.querySelector('input[type="email"]').value,
+                    message: form.querySelector('textarea').value
+                };
 
-// Обработка формы
-document.getElementById('project-form')?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = {
-        name: this.querySelector('input[type="text"]').value,
-        email: this.querySelector('input[type="email"]').value,
-        project: this.querySelector('textarea').value
-    };
-    
-    const success = await sendToTelegram(formData);
-    
-    if (success) {
-        alert('✅ Сообщение отправлено! Свяжусь с вами в течение 24 часов.');
-        this.reset();
-    } else {
-        alert('❌ Ошибка отправки. Напишите мне напрямую в Telegram: @sy1ka');
+                // Simple validation
+                if (!data.name || !data.email || !data.message) {
+                    this.showNotification('⚠️ Заполните все поля', 'warning');
+                    return;
+                }
+
+                if (!this.validateEmail(data.email)) {
+                    this.showNotification('⚠️ Введите корректный email', 'warning');
+                    return;
+                }
+
+                // Simulate sending
+                this.showNotification('📧 Отправляем сообщение...', 'info');
+                
+                setTimeout(() => {
+                    this.showNotification('✅ Сообщение отправлено! Свяжусь с вами в течение 24 часов.', 'success');
+                    form.reset();
+                    
+                    // Redirect to Telegram after 2 seconds
+                    setTimeout(() => {
+                        window.open('https://t.me/sy1ka', '_blank');
+                    }, 2000);
+                }, 1500);
+            });
+        }
     }
-});
-// Показывает, когда ты онлайн
-function updateOnlineStatus() {
-    const statusElement = document.getElementById('online-status');
-    if (statusElement) {
-        const isOnline = Math.random() > 0.3; // 70% шанс быть онлайн
-        statusElement.textContent = isOnline ? '🟢 Онлайн' : '⚫ Офлайн';
-        statusElement.style.color = isOnline ? '#4CAF50' : '#666';
+
+    validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
-}
-// Прогресс-бар навыков
-function initSkillBars() {
-    document.querySelectorAll('.skill-bar').forEach(bar => {
-        const percent = bar.getAttribute('data-percent');
-        bar.style.width = percent + '%';
-    });
-}
-// ФИКС: Форма обратной связи (упрощенная версия)
-function initContactForm() {
-    const form = document.getElementById('project-form');
-    
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = {
-                name: this.querySelector('input[type="text"]').value,
-                email: this.querySelector('input[type="email"]').value,
-                message: this.querySelector('textarea').value
-            };
-            
-            // Временное решение - показываем уведомление
-            showNotification('✅ Сообщение отправлено! Я свяжусь с вами в Telegram в течение 24 часов!');
-            
-            // Очищаем форму
-            this.reset();
-            
-            // Перенаправляем в Telegram
-            setTimeout(() => {
-                window.open('https://t.me/sy1ka', '_blank');
-            }, 2000);
+
+    // Language switcher
+    initLanguage() {
+        const langButtons = document.querySelectorAll('.lang-btn');
+        const currentLang = localStorage.getItem('portfolio-lang') || 'ru';
+
+        this.setLanguage(currentLang);
+
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                this.setLanguage(lang);
+                
+                // Update active state
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
         });
     }
+
+    setLanguage(lang) {
+        localStorage.setItem('portfolio-lang', lang);
+        document.documentElement.lang = lang;
+        
+        // You can add translations here later
+        console.log('Language changed to:', lang);
+    }
+
+    // Animations
+    initAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add fade-in class to elements
+        document.querySelectorAll('.work-card, .skill-item, .contact-form').forEach(el => {
+            el.classList.add('fade-in');
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.98)';
+                header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+    }
+
+    // Typing effect
+    initTypingEffect() {
+        const texts = ["впечатляют", "продают", "работают", "выделяются", "конвертируют"];
+        const typingElement = document.querySelector('.typing-text');
+        const cursorElement = document.querySelector('.cursor-blinking');
+        
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentText = texts[textIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                setTimeout(type, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? 50 : 100);
+            }
+        }
+
+        // Start typing after page load
+        setTimeout(type, 1000);
+    }
+
+    // Notifications
+    showNotification(message, type = 'info') {
+        const notification = document.getElementById('notification');
+        const colors = {
+            success: '#4CAF50',
+            error: '#f44336',
+            warning: '#ff9800',
+            info: '#2196F3'
+        };
+
+        notification.textContent = message;
+        notification.style.background = colors[type] || colors.info;
+        notification.style.display = 'block';
+
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
 }
 
-// Красивое уведомление
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #4CAF50;
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 10px;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-    `;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-}
-// Базовая защита от XSS
-function sanitizeInput(input) {
-    const div = document.createElement('div');
-    div.textContent = input;
-    return div.innerHTML;
-}
-
-// Защита форм
-function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// Логирование попыток взлома (для крутости)
-function logSecurityEvent(event) {
-    console.log(`🔒 Security Event: ${event} at ${new Date().toLocaleString()}`);
-}
-// Инициализация всего при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    initMobileMenu();          // Мобильное меню
-    initContactForm();         // Форма обратной связи
-    initLanguage();            // Язык
-    initAnimations();          // Анимации
-    
-    // Показываем что сайт загрузился
-    console.log('🚀 Sy1ka Portfolio loaded successfully!');
-    
-    // Защита - логируем загрузку
-    logSecurityEvent('Page loaded');
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new PortfolioApp();
 });
+
+// Add some fun console message
+console.log(`
+%c🚀 SY1KA PORTFOLIO v2.0
+%cПривет! Это консоль портфолио Sy1ka.
+%cЕсли ты здесь, значит интересуешься веб-разработкой!
+%cСвяжись со мной: @sy1ka в Telegram 💫
+`, 
+'color: #ff6b6b; font-size: 16px; font-weight: bold;',
+'color: #4ecdc4; font-size: 14px;',
+'color: #ffd166; font-size: 14px;',
+'color: #ffffff; font-size: 12px;'
+);
