@@ -1,219 +1,139 @@
-/* =========================
-   SY1KA — script.js (v2.0)
-   Responsibilities:
-   - Burger menu
-   - Typing effect
-   - GSAP scroll animations
-   - Magnetic cursor (desktop only)
-   - 3D tilt on work cards (desktop)
-   - Contact form simple handling (placeholder)
-   - IntersectionObserver fallback for reveal
-   ========================= */
+// Кастомный курсор
+document.addEventListener('mousemove', (e) => {
+    const cursor = document.querySelector('.cursor');
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+});
 
-(() => {
-  // Helpers
-  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-  const qs = s => document.querySelector(s);
-  const qsa = s => Array.from(document.querySelectorAll(s));
+document.addEventListener('mousedown', () => {
+    const cursor = document.querySelector('.cursor');
+    cursor.style.transform = 'scale(0.8)';
+});
 
-  /* ================= BURGER MENU ================= */
-  const burger = qs('#burger');
-  const navLinks = qs('#nav-links');
-  burger && burger.addEventListener('click', () => {
-    const expanded = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!expanded));
-    navLinks.classList.toggle('open');
-  });
+document.addEventListener('mouseup', () => {
+    const cursor = document.querySelector('.cursor');
+    cursor.style.transform = 'scale(1)';
+});
 
-  /* Close menu on link click (mobile) */
-  qsa('.nav-link').forEach(a => a.addEventListener('click', () => {
-    if (navLinks.classList.contains('open')) {
-      navLinks.classList.remove('open');
-      burger.setAttribute('aria-expanded','false');
-    }
-  }));
+// Меняющийся текст
+const typingTexts = [
+    "впечатляют",
+    "продают", 
+    "работают",
+    "выделяются",
+    "конвертируют"
+];
 
-  /* ================ TYPING EFFECT ================= */
-  const typingEl = qs('#typing');
-  const words = ['впечатляют','продают','выделяются','конвертируют'];
-  let ti = 0, ci = 0, deleting = false;
-  function tick() {
-    const word = words[ti];
-    if (!deleting) {
-      typingEl.textContent = word.slice(0, ci + 1);
-      ci++;
-      if (ci === word.length) { deleting = true; setTimeout(tick, 1400); return; }
-    } else {
-      typingEl.textContent = word.slice(0, ci - 1);
-      ci--;
-      if (ci === 0) { deleting = false; ti = (ti + 1) % words.length; setTimeout(tick, 300); return; }
-    }
-    setTimeout(tick, deleting ? 50 : 80);
-  }
-  setTimeout(tick, 700);
+let currentTextIndex = 0;
+const typingElement = document.querySelector('.typing-text');
+const cursorElement = document.querySelector('.cursor-blinking');
 
-  /* ================= GSAP Animations ================= */
-  if (window.gsap) {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Intro fade in
-    gsap.from('.hero-left > *', {
-      y: 20, opacity: 0, duration: 0.8, stagger: 0.08, ease: "power3.out",
-      scrollTrigger: { trigger: '.hero', start: 'top 90%' }
-    });
-
-    // Floating cards
-    gsap.to('.card-a', { y: -10, repeat: -1, yoyo: true, duration: 3, ease: "sine.inOut" });
-    gsap.to('.card-b', { y: -14, repeat: -1, yoyo: true, duration: 3.4, ease: "sine.inOut", delay: 0.2 });
-    gsap.to('.card-c', { y: -8, repeat: -1, yoyo: true, duration: 2.8, ease: "sine.inOut", delay: 0.6 });
-
-    // Reveal sections
-    qsa('.work-card, .card.tech, .contact-left, .contact-form').forEach(el => {
-      gsap.from(el, {
-        y: 24, opacity: 0, duration: 0.8, ease: "power3.out", scrollTrigger: {
-          trigger: el, start: 'top 92%', toggleActions: 'play none none none'
+function typeText() {
+    const text = typingTexts[currentTextIndex];
+    let charIndex = 0;
+    
+    typingElement.textContent = '';
+    cursorElement.style.opacity = '1';
+    
+    const typingInterval = setInterval(() => {
+        typingElement.textContent += text[charIndex];
+        charIndex++;
+        
+        if (charIndex === text.length) {
+            clearInterval(typingInterval);
+            setTimeout(eraseText, 2000);
         }
-      });
-    });
+    }, 100);
+}
 
-    // Stagger works
-    gsap.from('.works-grid > .work-card', {
-      y: 24, opacity: 0, duration: 0.8, stagger: 0.12, ease: "power3.out", scrollTrigger: {
-        trigger: '.works-grid', start: 'top 92%'
-      }
-    });
-
-    // Header shadow on scroll
-    window.addEventListener('scroll', () => {
-      const header = document.querySelector('.header');
-      if (window.scrollY > 40) header.style.boxShadow = '0 8px 30px rgba(2,6,23,0.6)';
-      else header.style.boxShadow = 'none';
-    });
-  } // if gsap
-
-  /* ================= MAGNETIC CURSOR (desktop) ================= */
-  const cursor = qs('#cursor');
-  if (!isTouch && cursor) {
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-    });
-
-    // interactive elements that react
-    const magnets = qsa('.btn, .nav-link, .tg-btn, .work-card');
-    magnets.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.style.transform = 'translate(-50%,-50%) scale(1.6)');
-      el.addEventListener('mouseleave', () => cursor.style.transform = 'translate(-50%,-50%) scale(1)');
-    });
-
-    // Magnetic attraction (subtle)
-    document.addEventListener('mousemove', e => {
-      magnets.forEach(el => {
-        const r = el.getBoundingClientRect();
-        const dx = e.clientX - (r.left + r.width / 2);
-        const dy = e.clientY - (r.top + r.height / 2);
-        const dist = Math.hypot(dx, dy);
-        const max = 120; // influence radius
-        if (dist < max) {
-          const tx = (dx / max) * 8;
-          const ty = (dy / max) * 6;
-          el.style.transform = `translate(${tx}px, ${ty}px)`;
-        } else {
-          el.style.transform = '';
+function eraseText() {
+    const text = typingElement.textContent;
+    let charIndex = text.length - 1;
+    
+    const eraseInterval = setInterval(() => {
+        typingElement.textContent = text.substring(0, charIndex);
+        charIndex--;
+        
+        if (charIndex < 0) {
+            clearInterval(eraseInterval);
+            currentTextIndex = (currentTextIndex + 1) % typingTexts.length;
+            setTimeout(typeText, 500);
         }
-      });
-    });
-  }
+    }, 50);
+}
 
-  /* ================= 3D TILT FOR WORK CARDS (desktop only) ================= */
-  if (!isTouch) {
-    qsa('[data-tilt]').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        const rotateX = (py - 0.5) * 10; // tilt amount
-        const rotateY = (px - 0.5) * -10;
-        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(6px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
+// Плавная прокрутка
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     });
-  }
+});
 
-  /* ================= IntersectionObserver (fallback reveal) ================= */
-  const io = new IntersectionObserver((entries) => {
+// Анимация при прокрутке
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('in-view');
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
     });
-  }, { threshold: 0.08 });
+}, observerOptions);
 
-  qsa('.work-card, .card.tech, .contact-left, .contact-form').forEach(el => io.observe(el));
-
-  /* ================= CONTACT FORM (simple) ================= */
-  const form = qs('#project-form');
-  const status = qs('#form-status');
-  form && form.addEventListener('submit', async (e) => {
+// Форма обратной связи
+document.getElementById('project-form').addEventListener('submit', function(e) {
     e.preventDefault();
-    const data = new FormData(form);
-    const payload = {
-      name: data.get('name'),
-      email: data.get('email'),
-      message: data.get('message')
-    };
+    
+    // Здесь можно добавить отправку на email или Telegram
+    const formData = new FormData(this);
+    const name = formData.get('name') || 'Пользователь';
+    
+    // Просто показываем уведомление
+    alert(`Спасибо, ${name}! Я свяжусь с вами в течение 24 часов!`);
+    this.reset();
+});
 
-    // Simple UI feedback
-    status.textContent = 'Отправка...';
-    try {
-      // OPTIONAL: integrate with your Telegram BOT / backend
-      // Example placeholder: send to some API endpoint
-      // await fetch('/api/send', { method:'POST', body: JSON.stringify(payload), headers:{'Content-Type':'application/json'} });
+// Инициализация
+document.addEventListener('DOMContentLoaded', function() {
+    // Запускаем печатающий текст
+    setTimeout(typeText, 1000);
+    
+    // Наблюдаем за элементами для анимации
+    document.querySelectorAll('.work-card, .tech-item, .contact-form').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease';
+        observer.observe(el);
+    });
+    
+    // Плавное появление страницы
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
 
-      // Simulate success
-      await new Promise(r => setTimeout(r, 800));
-      status.textContent = 'Спасибо! Я свяжусь с вами в Telegram.';
-      form.reset();
-    } catch (err) {
-      status.textContent = 'Ошибка отправки — попробуйте позже.';
-    }
-  });
-
-  /* ================= Performance: unload heavy effects on small screens ================= */
-  function adjustForSize() {
-    if (window.innerWidth < 520) {
-      // remove transforms applied by magnetic effect
-      qsa('.btn, .work-card, .nav-link').forEach(el => el.style.transform = '');
-      if (cursor) cursor.style.display = 'none';
+// Изменение хедера при прокрутке
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 100) {
+        header.style.background = 'rgba(10, 10, 10, 0.98)';
+        header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
     } else {
-      if (cursor) cursor.style.display = '';
+        header.style.background = 'rgba(10, 10, 10, 0.9)';
+        header.style.boxShadow = 'none';
     }
-  }
-  adjustForSize();
-  window.addEventListener('resize', adjustForSize);
-
-})();
-
-
-⸻
-
-assets/img/work1.svg
-
-<!-- assets/img/work1.svg — аккуратная svg-превью (замени на реальный скриншот при желании) -->
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
-  <defs>
-    <linearGradient id="g1" x1="0" x2="1">
-      <stop offset="0" stop-color="#667eea"/>
-      <stop offset="1" stop-color="#764ba2"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="800" rx="16" fill="#0f1724"/>
-  <rect x="60" y="60" width="1080" height="620" rx="12" fill="url(#g1)" opacity="0.12"/>
-  <g transform="translate(100,120)" fill="#fff" opacity="0.95">
-    <rect width="440" height="280" rx="8" fill="#1f2937" />
-    <rect x="480" width="540" height="60" rx="6" fill="#111827"/>
-    <rect x="480" y="84" width="540" height="36" rx="6" fill="#0b1220"/>
-    <rect x="480" y="140" width="320" height="160" rx="8" fill="#0b1220"/>
-  </g>
-  <text x="120" y="740" fill="#9fb3d6" font-family="Inter,Arial" font-size="22">E-commerce — preview</text>
-</svg>
+});
