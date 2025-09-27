@@ -798,3 +798,27 @@ body {
         overflow: hidden;
     }
 }
+/* Переключатель языка */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.lang-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.lang-btn:active {
+    transform: scale(0.95);
+}
