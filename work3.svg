@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g3" x1="0" x2="1">
+      <stop offset="0" stop-color="#4ecdc4"/>
+      <stop offset="1" stop-color="#2bb3a1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" rx="16" fill="#061015"/>
+  <rect x="100" y="100" width="1000" height="520" rx="14" fill="url(#g3)" opacity="0.11"/>
+  <g transform="translate(140,140)" fill="#fff" opacity="0.95">
+    <rect width="920" height="120" rx="8" fill="#0b1220"/>
+    <rect y="160" width="920" height="260" rx="8" fill="#0b1220"/>
+  </g>
+  <text x="120" y="740" fill="#9bd7cf" font-family="Inter,Arial" font-size="22">Landing — preview</text>
+</svg>
