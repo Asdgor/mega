@@ -4,88 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sy1ka | Веб-разработчик</title>
-    <meta name="description" content="Создаю уникальные сайты, которые выделяются. Современный дизайн, анимации, результат.">
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Профессиональный веб-разработчик. Создаю современные сайты с уникальным дизайном.">
+    
+    <!-- SEO -->
+    <meta name="keywords" content="веб-разработчик, создание сайтов, фронтенд, JavaScript, React">
+    <meta name="author" content="Sy1ka">
+    
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
-        <!-- Футер -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span>SY1KA</span>
-                    <div class="logo-dot"></div>
-                </div>
-                <p>Создаю цифровые продукты с 2024 года</p>
-                <div class="footer-links">
-                    <a href="https://t.me/sy1ka" target="_blank">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ⬇️⬇️⬇️ ВСТАВЛЯЙ ПРЯМО ЗДЕСЬ ⬇️⬇️⬇️ -->
-    
-    <!-- Модалка проектов -->
-    <div id="project-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="modal-body">
-                <div class="modal-image">
-                    <img id="modal-img" src="" alt="Проект">
-                </div>
-                <div class="modal-info">
-                    <h3 id="modal-title">Название проекта</h3>
-                    <p id="modal-description">Описание проекта</p>
-                    <div class="modal-tech" id="modal-tech"></div>
-                    <div class="modal-actions">
-                        <a href="#" id="modal-link" class="btn btn-primary" target="_blank">
-                            <i class="fas fa-external-link-alt"></i>
-                            Смотреть проект
-                        </a>
-                        <button class="btn btn-secondary" onclick="closeModal()">
-                            Закрыть
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ⬆️⬆️⬆️ ДО этого места ⬆️⬆️⬆️ -->
-
-    <script src="script.js"></script>
-</body>  <!-- Это закрывающий тег body -->
-</html>  <!-- Это закрывающий тег html -->
 <body>
-    <!-- Курсор-круг -->
-    <div class="cursor"></div>
-    
-    <!-- Хедер -->
+    <!-- Header -->
     <header class="header">
-        <nav class="nav">
+        <nav class="nav container">
             <div class="logo">
-                <span class="logo-text">SY1KA</span>
+                <span>SY1KA</span>
                 <div class="logo-dot"></div>
             </div>
+            
             <div class="nav-links">
-                <a href="#home" class="nav-link">Главная</a>
-                <a href="#works" class="nav-link">Работы</a>
-                <a href="#stack" class="nav-link">Стек</a>
-                <a href="#contact" class="nav-link">Контакты</a>
+                <a href="#home">Главная</a>
+                <a href="#works">Работы</a>
+                <a href="#skills">Навыки</a>
+                <a href="#contact">Контакты</a>
             </div>
+            
             <div class="nav-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="ru">RU</button>
+                    <span>|</span>
+                    <button class="lang-btn" data-lang="en">EN</button>
+                </div>
                 <a href="https://t.me/sy1ka" class="tg-btn" target="_blank">
                     <i class="fab fa-telegram"></i>
                     Написать
                 </a>
             </div>
+            
             <div class="menu-btn">
                 <span></span>
                 <span></span>
@@ -94,12 +52,11 @@
         </nav>
     </header>
 
-    <!-- Герой -->
+    <!-- Hero -->
     <section id="home" class="hero">
         <div class="hero-bg">
             <div class="bg-shape shape-1"></div>
             <div class="bg-shape shape-2"></div>
-            <div class="bg-shape shape-3"></div>
         </div>
         
         <div class="container">
@@ -126,8 +83,8 @@
                         <span>Смотреть работы</span>
                         <i class="fas fa-arrow-down"></i>
                     </a>
-                    <a href="https://t.me/sy1ka" class="btn btn-secondary" target="_blank">
-                        <i class="fab fa-telegram"></i>
+                    <a href="#contact" class="btn btn-secondary">
+                        <i class="fas fa-paper-plane"></i>
                         Обсудить проект
                     </a>
                 </div>
@@ -147,46 +104,25 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <div class="card-content">
-                        <i class="fas fa-code"></i>
-                        <span>Чистый код</span>
-                    </div>
-                </div>
-                <div class="floating-card card-2">
-                    <div class="card-content">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>Адаптив</span>
-                    </div>
-                </div>
-                <div class="floating-card card-3">
-                    <div class="card-content">
-                        <i class="fas fa-bolt"></i>
-                        <span>Скорость</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- Работы -->
+    <!-- Works -->
     <section id="works" class="works">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Избранные работы</h2>
-                <p class="section-subtitle">Проекты, которыми горжусь</p>
+                <h2>Мои работы</h2>
+                <p>Проекты, которыми горжусь</p>
             </div>
             
             <div class="works-grid">
-                <div class="work-card">
+                <div class="work-card" data-project="1">
                     <div class="work-image">
                         <div class="work-badge">Новый</div>
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EИнтернет-магазин%3C/text%3E%3C/svg%3E" alt="Интернет-магазин">
+                        <div class="work-placeholder">🛒</div>
                     </div>
                     <div class="work-content">
-                        <h3>E-commerce платформа</h3>
+                        <h3>Интернет-магазин</h3>
                         <p>Многостраничный магазин с корзиной и фильтрами</p>
                         <div class="work-tech">
                             <span>HTML/CSS</span>
@@ -196,12 +132,12 @@
                     </div>
                 </div>
                 
-                <div class="work-card">
+                <div class="work-card" data-project="2">
                     <div class="work-image">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EКорпоративный сайт%3C/text%3E%3C/svg%3E" alt="Корпоративный сайт">
+                        <div class="work-placeholder">🏢</div>
                     </div>
                     <div class="work-content">
-                        <h3>Корпоративный портал</h3>
+                        <h3>Корпоративный сайт</h3>
                         <p>Сайт для строительной компании с каталогом услуг</p>
                         <div class="work-tech">
                             <span>React</span>
@@ -211,13 +147,13 @@
                     </div>
                 </div>
                 
-                <div class="work-card">
+                <div class="work-card" data-project="3">
                     <div class="work-image">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234ecdc4'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EЛендинг%3C/text%3E%3C/svg%3E" alt="Лендинг">
+                        <div class="work-placeholder">🎓</div>
                     </div>
                     <div class="work-content">
-                        <h3>Продающий лендинг</h3>
-                        <p>Высококонверсионная страница для IT-компании</p>
+                        <h3>Образовательная платформа</h3>
+                        <p>Сайт для онлайн-курсов с личным кабинетом</p>
                         <div class="work-tech">
                             <span>Vue.js</span>
                             <span>GSAP</span>
@@ -229,132 +165,144 @@
         </div>
     </section>
 
-    <!-- Стек -->
-    <section id="stack" class="stack">
+    <!-- Skills -->
+    <section id="skills" class="skills">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Технологии</h2>
-                <p class="section-subtitle">Инструменты, которые использую</p>
+                <h2>Мои навыки</h2>
+                <p>Технологии, которые использую</p>
             </div>
             
-            <div class="stack-grid">
-                <div class="tech-category">
+            <div class="skills-grid">
+                <div class="skill-category">
                     <h3>Frontend</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">HTML5</div>
-                        <div class="tech-item">CSS3/SCSS</div>
-                        <div class="tech-item">JavaScript</div>
-                        <div class="tech-item">React</div>
-                        <div class="tech-item">Vue.js</div>
+                    <div class="skills-list">
+                        <div class="skill-item">HTML5</div>
+                        <div class="skill-item">CSS3/SCSS</div>
+                        <div class="skill-item">JavaScript</div>
+                        <div class="skill-item">React</div>
+                        <div class="skill-item">Vue.js</div>
                     </div>
                 </div>
                 
-                <div class="tech-category">
+                <div class="skill-category">
                     <h3>Backend</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">Node.js</div>
-                        <div class="tech-item">Python</div>
-                        <div class="tech-item">MongoDB</div>
-                        <div class="tech-item">PostgreSQL</div>
+                    <div class="skills-list">
+                        <div class="skill-item">Node.js</div>
+                        <div class="skill-item">Python</div>
+                        <div class="skill-item">MongoDB</div>
+                        <div class="skill-item">PostgreSQL</div>
                     </div>
                 </div>
                 
-                <div class="tech-category">
+                <div class="skill-category">
                     <h3>Инструменты</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">Git</div>
-                        <div class="tech-item">Figma</div>
-                        <div class="tech-item">Webpack</div>
-                        <div class="tech-item">Docker</div>
+                    <div class="skills-list">
+                        <div class="skill-item">Git</div>
+                        <div class="skill-item">Figma</div>
+                        <div class="skill-item">Webpack</div>
+                        <div class="skill-item">Docker</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Контакты -->
+    <!-- Contact -->
     <section id="contact" class="contact">
         <div class="container">
+            <div class="section-header">
+                <h2>Свяжитесь со мной</h2>
+                <p>Готов обсудить ваш проект</p>
+            </div>
+            
             <div class="contact-content">
                 <div class="contact-info">
-                    <h2>Готов к новым вызовам</h2>
-                    <p>Есть проект? Давайте обсудим и сделаем что-то крутое вместе!</p>
+                    <h3>Давайте работать вместе!</h3>
+                    <p>Отправьте заявку и я свяжусь с вами в течение 24 часов</p>
                     
                     <div class="contact-links">
                         <a href="https://t.me/sy1ka" class="contact-link" target="_blank">
                             <i class="fab fa-telegram"></i>
                             <span>@sy1ka</span>
+                            <small>Отвечаю быстро</small>
                         </a>
-                        <a href="mailto:hello@sy1ka.ru" class="contact-link">
-                            <i class="fas fa-envelope"></i>
-                            <span>hello@sy1ka.ru</span>
-                        </a>
+                        <div class="contact-link">
+                            <i class="fas fa-clock"></i>
+                            <span>Время ответа</span>
+                            <small>2-3 часа</small>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="contact-form">
-                    <form id="project-form">
-                        <div class="form-group">
-                            <input type="text" placeholder="Как к вам обращаться?" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Email для связи" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Расскажите о проекте..." rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <span>Обсудить проект</span>
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
+                <form class="contact-form" id="project-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Расскажите о вашем проекте..." rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span>Отправить заявку</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </section>
 
-    <!-- Футер -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <span>SY1KA</span>
-                    <div class="logo-dot"></div>
+                <div class="footer-info">
+                    <div class="footer-logo">SY1KA</div>
+                    <p>Веб-разработчик &amp; Креативный кодер</p>
                 </div>
-                <p>Создаю цифровые продукты с 2024 года</p>
                 <div class="footer-links">
                     <a href="https://t.me/sy1ka" target="_blank">
                         <i class="fab fa-telegram"></i>
                     </a>
-                    <a href="#">
+                    <a href="https://github.com/Asdgor" target="_blank">
                         <i class="fab fa-github"></i>
                     </a>
                 </div>
             </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Sy1ka. Все права защищены.</p>
+            </div>
         </div>
     </footer>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <div class="modal-placeholder" id="modal-placeholder">🛒</div>
+                </div>
+                <div class="modal-info">
+                    <h3 id="modal-title">Название проекта</h3>
+                    <p id="modal-description">Описание проекта</p>
+                    <div class="modal-tech" id="modal-tech"></div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="closeModal()">
+                            <span>Понятно</span>
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
 
     <script src="script.js"></script>
 </body>
 </html>
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;">
-
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="X-Frame-Options" content="DENY">
-<!-- Заменяем статические тексты на data-lang атрибуты -->
-<h1 class="hero-title">
-    <span class="title-line" data-lang="heroTitle">Сайты, которые</span>
-    <span class="title-line">
-        <span class="typing-text">впечатляют</span>
-        <span class="cursor-blinking">|</span>
-    </span>
-</h1>
-
-<p class="hero-description" data-lang="heroDescription">
-    Создаю цифровые продукты с характером. Не просто код — а опыт, который цепляет и решает бизнес-задачи.
-</p>
-
-<!-- И так для всех текстов которые нужно переводить -->
-<script src="lang.js"></script>
-<script src="script.js"></script>
