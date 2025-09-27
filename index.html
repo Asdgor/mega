@@ -3,130 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sy1ka | Премиум веб-разработка</title>
-    <meta name="description" content="Элитная веб-разработка. Создаю цифровые шедевры, которые выделяют бизнес на фоне конкурентов.">
+    <title>Sy1ka | Элитная веб-разработка</title>
+    <meta name="description" content="Эксклюзивные цифровые решения премиум-класса. Создаю сайты, от которых захватывает дух.">
     
-    <!-- Critical CSS встроен для мгновенной загрузки -->
+    <!-- Preload -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        /* Critical CSS - то что видно сразу */
+        /* CRITICAL CSS - то что видно сразу */
         :root {
-            --neon-pink: #ff00ff;
-            --neon-cyan: #00ffff;
-            --neon-green: #00ff00;
-            --dark-space: #0a0a12;
-            --deep-space: #050508;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --text: #1e293b;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'SF Pro Display', -apple-system, system-ui;
-            background: var(--dark-space);
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--text);
             overflow-x: hidden;
-            min-height: 100vh;
         }
         
-        /* Лоадер на 0.3сек */
+        /* Лоадер с анимацией */
         #loader {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: var(--deep-space);
-            z-index: 9999;
+            background: var(--dark);
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 9999;
         }
         
-        .loader-text {
-            font-size: 2rem;
-            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: pulse 2s infinite;
+            margin-bottom: 1rem;
+        }
+        
+        .loader-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .loader-progress {
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            width: 0%;
+            animation: loading 2s ease-in-out;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
     </style>
 </head>
 <body>
     <!-- Прелоадер -->
     <div id="loader">
-        <div class="loader-text">SY1KA</div>
+        <div class="loader-content">
+            <div class="loader-logo">SY1KA</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- 3D фон -->
-    <canvas id="bgCanvas"></canvas>
-
-    <!-- Контент -->
-    <div id="content" style="display: none;">
+    <!-- Основной контент -->
+    <div id="main-content" style="display: none;">
+        <!-- Курсор-круг -->
+        <div class="cursor"></div>
+        
         <!-- Хедер с стеклянным эффектом -->
-        <header class="glass-header">
-            <nav class="nav">
+        <header class="header">
+            <nav class="nav container">
                 <div class="logo" data-text="SY1KA">SY1KA</div>
+                
                 <div class="nav-links">
-                    <a href="#home" data-hover="Главная">Главная</a>
-                    <a href="#portfolio" data-hover="Портфолио">Портфолио</a>
-                    <a href="#process" data-hover="Процесс">Процесс</a>
-                    <a href="#contact" data-hover="Контакты">Контакты</a>
+                    <a href="#home" class="nav-link" data-hover="Главная">Главная</a>
+                    <a href="#portfolio" class="nav-link" data-hover="Портфолио">Портфолио</a>
+                    <a href="#services" class="nav-link" data-hover="Услуги">Услуги</a>
+                    <a href="#process" class="nav-link" data-hover="Процесс">Процесс</a>
+                    <a href="#contact" class="nav-link" data-hover="Контакты">Контакты</a>
                 </div>
-                <div class="header-actions">
+                
+                <div class="nav-actions">
                     <div class="theme-switcher">
-                        <div class="switch">
-                            <span>🌙</span>
-                            <span>☀️</span>
-                        </div>
+                        <i class="fas fa-moon"></i>
                     </div>
-                    <a href="https://t.me/sy1ka" class="neon-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        Начать проект
+                    <a href="https://t.me/sy1ka" class="cta-button magnetic-btn" target="_blank">
+                        <span class="btn-text">Обсудить проект</span>
+                        <div class="btn-hover"></div>
                     </a>
+                </div>
+                
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </nav>
         </header>
 
         <!-- Герой секция с параллаксом -->
         <section id="home" class="hero">
-            <div class="hero-content">
-                <div class="floating-elements">
-                    <div class="float-element" style="--delay: 0s;">⚡</div>
-                    <div class="float-element" style="--delay: 1s;">🚀</div>
-                    <div class="float-element" style="--delay: 2s;">💫</div>
+            <div class="hero-bg">
+                <div class="bg-shape shape-1"></div>
+                <div class="bg-shape shape-2"></div>
+                <div class="bg-shape shape-3"></div>
+            </div>
+            
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span>🎯 Доступен для новых проектов</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        <span class="title-line">Создаю цифровые</span>
+                        <span class="title-line">
+                            <span class="typing-text">шедевры</span>
+                            <span class="cursor-blinking">|</span>
+                        </span>
+                        <span class="title-line">которые продают</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        Эксклюзивная веб-разработка премиум-класса. Превращаю ваши идеи в цифровые продукты, 
+                        которые выделяют бренд и увеличивают конверсию на 300%.
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <a href="#portfolio" class="btn btn-primary magnetic-btn">
+                            <span>Смотреть портфолио</span>
+                            <i class="fas fa-arrow-down"></i>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            <i class="fas fa-play"></i>
+                            <span>Смотреть видео-презентацию</span>
+                        </a>
+                    </div>
+                    
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number" data-count="47">0</div>
+                            <div class="stat-label">успешных проектов</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" data-count="98">0</div>
+                            <div class="stat-label">довольных клиентов</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" data-count="2563">0</div>
+                            <div class="stat-label">часов опыта</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <h1 class="glitch-text" data-text="Цифровые решения">
-                    <span>Цифровые</span>
-                    <span class="accent">решения</span>
-                    <span>премиум-класса</span>
-                </h1>
-                
-                <p class="typewriter">Создаю не просто сайты, а цифровые экосистемы, которые увеличивают конверсию на 300% и выделяют ваш бренд среди конкурентов.</p>
-                
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-number" data-target="247">0</div>
-                        <div class="stat-label">успешных проектов</div>
+                <div class="hero-visual">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-bolt"></i>
+                        <span>Скорость</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-number" data-target="98">0</div>
-                        <div class="stat-label">клиентов довольны</div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Адаптив</span>
                     </div>
-                    <div class="stat">
-                        <div class="stat-number" data-target="1536">0</div>
-                        <div class="stat-label">часов опыта</div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Результат</span>
                     </div>
-                </div>
-                
-                <div class="hero-actions">
-                    <button class="magnetic-btn" data-magnetic>
-                        <span>Обсудить проект</span>
-                        <div class="hover-effect"></div>
-                    </button>
-                    <a href="#portfolio" class="watch-reel">
-                        🎬 Смотреть шоурил
-                    </a>
                 </div>
             </div>
             
@@ -134,29 +204,55 @@
                 <div class="mouse">
                     <div class="wheel"></div>
                 </div>
-                <span>Листайте вниз</span>
+                <span>Листайте для магии</span>
             </div>
         </section>
 
-        <!-- Преимущества с анимацией по скроллу -->
-        <section class="benefits">
+        <!-- Секция портфолио с 3D эффектами -->
+        <section id="portfolio" class="portfolio">
             <div class="container">
-                <h2>Почему выбирают меня</h2>
-                <div class="benefits-grid">
-                    <div class="benefit-card" data-scroll>
-                        <div class="benefit-icon">🎯</div>
-                        <h3>Точечная проработка</h3>
-                        <p>Каждый пиксель имеет значение. Довожу до совершенства каждую деталь.</p>
+                <div class="section-header">
+                    <h2>Избранные работы</h2>
+                    <p>Проекты, которые изменили бизнес клиентов</p>
+                </div>
+                
+                <div class="portfolio-grid">
+                    <!-- Проект 1 -->
+                    <div class="project-card" data-project="1">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="view-project">Смотреть кейс</button>
+                            </div>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%236366f1'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EПремиум лендинг%3C/text%3E%3C/svg%3E" alt="Премиум лендинг">
+                        </div>
+                        <div class="project-content">
+                            <h3>Элитный лендинг для ювелирного бренда</h3>
+                            <p>Конверсия увеличена на 250%, средний чек вырос на 40%</p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Three.js</span>
+                                <span>GSAP</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="benefit-card" data-scroll>
-                        <div class="benefit-icon">⚡</div>
-                        <h3>Молниеносная скорость</h3>
-                        <p>Сайты загружаются за 0.8 секунды. Google PageSpeed - 95+ баллов.</p>
-                    </div>
-                    <div class="benefit-card" data-scroll>
-                        <div class="benefit-icon">🔒</div>
-                        <h3>Максимальная безопасность</h3>
-                        <p>Защита от DDoS, SQL-инъекций и XSS атак. Ваши данные в безопасности.</p>
+                    
+                    <!-- Проект 2 -->
+                    <div class="project-card" data-project="2">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <button class="view-project">Смотреть кейс</button>
+                            </div>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f59e0b'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle'%3EКорпоративный портал%3C/text%3E%3C/svg%3E" alt="Корпоративный портал">
+                        </div>
+                        <div class="project-content">
+                            <h3>Корпоративная экосистема для IT-компании</h3>
+                            <p>Автоматизация 80% процессов, экономия 200+ часов в месяц</p>
+                            <div class="project-tech">
+                                <span>Vue.js</span>
+                                <span>Node.js</span>
+                                <span>WebSocket</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +265,8 @@
     <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
     
     <!-- Скрипты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <script src="app.js" defer></script>
 </body>
 </html>
