@@ -137,3 +137,68 @@ window.addEventListener('scroll', function() {
         header.style.boxShadow = 'none';
     }
 });
+// Данные проектов
+const projects = [
+    {
+        id: 1,
+        title: "E-commerce платформа",
+        description: "Полнофункциональный интернет-магазин с корзиной, фильтрами и системой оплаты. Адаптивный дизайн, быстрая загрузка, SEO-оптимизация.",
+        tech: ["HTML/CSS", "JavaScript", "React", "Node.js"],
+        image: "project1.jpg",
+        link: "#"
+    },
+    {
+        id: 2, 
+        title: "Корпоративный портал",
+        description: "Сайт для строительной компании с каталогом услуг, формой заявок и административной панелью для управления контентом.",
+        tech: ["Vue.js", "PHP", "MySQL", "API"],
+        image: "project2.jpg", 
+        link: "#"
+    }
+];
+
+// Открытие модалки
+function openProjectModal(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    const modal = document.getElementById('project-modal');
+    
+    if (project) {
+        document.getElementById('modal-title').textContent = project.title;
+        document.getElementById('modal-description').textContent = project.description;
+        document.getElementById('modal-img').src = project.image;
+        document.getElementById('modal-link').href = project.link;
+        
+        // Технологии
+        const techContainer = document.getElementById('modal-tech');
+        techContainer.innerHTML = '';
+        project.tech.forEach(tech => {
+            const span = document.createElement('span');
+            span.textContent = tech;
+            techContainer.appendChild(span);
+        });
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Закрытие модалки
+function closeModal() {
+    document.getElementById('project-modal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Закрытие по клику вне модалки
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('project-modal');
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+// Закрытие по ESC
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+});
