@@ -1,181 +1,171 @@
-class PremiumPortfolio {
+// Основной класс приложения
+class WowPortfolio {
     constructor() {
         this.init();
     }
 
     async init() {
-        // 1. Быстрая загрузка критического контента
-        await this.loadCritical();
-        
-        // 2. Инициализация всех модулей
+        // Инициализация всех модулей
+        await this.loadAssets();
         this.initLoader();
-        this.init3DBackground();
+        this.initCursor();
         this.initAnimations();
         this.initMicroInteractions();
-        this.initPerformance();
+        this.initScrollEffects();
         
-        console.log('🚀 Premium Portfolio loaded!');
+        console.log('🎉 Wow Portfolio initialized!');
     }
 
-    // Мгновенная загрузка видимой части
-    async loadCritical() {
-        // Preload critical resources
-        const critical = [
-            this.preloadImage('hero-bg.jpg'),
-            this.preloadFont('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap')
+    // Загрузка ресурсов
+    async loadAssets() {
+        const promises = [
+            this.preloadImages(),
+            this.preloadFonts()
         ];
         
-        await Promise.all(critical);
-        document.getElementById('content').style.display = 'block';
+        await Promise.all(promises);
     }
 
-    // 3D фон с частицами
-    init3DBackground() {
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        const particles = [];
-        for (let i = 0; i < 100; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 2,
-                speed: Math.random() * 0.5
-            });
-        }
-        
-        function animate() {
-            ctx.fillStyle = 'rgba(10, 10, 18, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-                particle.y += particle.speed;
-                if (particle.y > canvas.height) particle.y = 0;
-                
-                ctx.fillStyle = `rgba(0, 255, 255, ${particle.size / 4})`;
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            
-            requestAnimationFrame(animate);
-        }
-        animate();
-    }
-
-    // Плавные анимации
-    initAnimations() {
-        // Intersection Observer для анимаций по скроллу
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    
-                    // Анимация счетчиков
-                    if (entry.target.classList.contains('stat-number')) {
-                        this.animateCounter(entry.target);
-                    }
+    // Прелоадер
+    initLoader() {
+        window.addEventListener('load', () => {
+            gsap.to('#loader', {
+                duration: 0.5,
+                opacity: 0,
+                onComplete: () => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    this.animateEntrance();
                 }
             });
-        }, { threshold: 0.1 });
-
-        // Наблюдаем за элементами
-        document.querySelectorAll('[data-scroll]').forEach(el => {
-            observer.observe(el);
         });
     }
 
-    // Микро-интерактивы
+    // Анимация появления контента
+    animateEntrance() {
+        gsap.from('#main-content > *', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'power3.out'
+        });
+    }
+
+    // Кастомный курсор
+    initCursor() {
+        const cursor = document.querySelector('.cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: 'power2.out'
+            });
+        });
+
+        // Эффекты при наведении
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { scale: 1.5, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { scale: 1, duration: 0.3 });
+            });
+        });
+    }
+
+    // Магнитные кнопки
     initMicroInteractions() {
-        // Магнитные кнопки
-        document.querySelectorAll('[data-magnetic]').forEach(btn => {
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 
-                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+                gsap.to(btn, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
             });
-            
+
             btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
-
-        // Параллакс эффект
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.parallax-element');
-            if (parallax) {
-                parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-    }
-
-    // Оптимизация производительности
-    initPerformance() {
-        // Lazy loading для изображений
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(img);
-                    }
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.3,
+                    ease: 'power2.out'
                 });
             });
-
-            document.querySelectorAll('img.lazy').forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-
-        // Оптимизация скролла
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    // Логика скролла
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    // Вспомогательные методы
-    preloadImage(src) {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = resolve;
         });
     }
 
-    animateCounter(element) {
-        const target = parseInt(element.dataset.target);
-        const duration = 2000;
-        const step = target / (duration / 16);
-        let current = 0;
-        
-        const timer = setInterval(() => {
-            current += step;
-            if (current >= target) {
-                element.textContent = target;
-                clearInterval(timer);
-            } else {
-                element.textContent = Math.floor(current);
+    // Сложные анимации по скроллу
+    initScrollEffects() {
+        // Инициализация GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Анимация для герой секции
+        gsap.to('.hero-bg .shape-1', {
+            y: 100,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
             }
-        }, 16);
+        });
+
+        // Анимация карточек портфолио
+        gsap.from('.project-card', {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            scrollTrigger: {
+                trigger: '.portfolio',
+                start: 'top 80%',
+                end: 'bottom 20%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        // Параллакс эффекты
+        gsap.to('.hero-bg', {
+            yPercent: -50,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+    }
+
+    // Анимация счетчиков
+    animateCounters() {
+        document.querySelectorAll('.stat-number').forEach(counter => {
+            const target = parseInt(counter.dataset.count);
+            const duration = 2000;
+            
+            gsap.to(counter, {
+                innerText: target,
+                duration: duration / 1000,
+                snap: { innerText: 1 },
+                stagger: 1,
+                onUpdate: function() {
+                    counter.innerText = Math.floor(this.targets()[0].innerText);
+                }
+            });
+        });
     }
 }
 
-// Запуск при полной загрузке
-window.addEventListener('load', () => {
-    new PremiumPortfolio();
+// Запуск приложения
+document.addEventListener('DOMContentLoaded', () => {
+    new WowPortfolio();
 });
