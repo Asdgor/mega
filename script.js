@@ -202,3 +202,41 @@ document.addEventListener('keydown', function(event) {
         closeModal();
     }
 });
+// Мобильное меню
+function initMobileMenu() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navActions = document.querySelector('.nav-actions');
+    
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            navActions.classList.toggle('active');
+            document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'auto' : 'hidden';
+        });
+    }
+}
+
+// В CSS добавляем:
+.menu-btn.active span:nth-child(1) { 
+    transform: rotate(45deg) translate(5px, 5px); 
+}
+.menu-btn.active span:nth-child(2) { 
+    opacity: 0; 
+}
+.menu-btn.active span:nth-child(3) { 
+    transform: rotate(-45deg) translate(7px, -6px); 
+}
+
+.nav-links.active, .nav-actions.active {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-secondary);
+    padding: 2rem;
+    gap: 1rem;
+}
