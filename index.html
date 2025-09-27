@@ -1,35 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Мой крутой сайт</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            padding: 50px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white;
-        }
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        }
-        button {
-            background: white;
-            color: #ff6b6b;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            margin: 20px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Веб-разработчик | Asdgor</title>
+    <meta name="description" content="Профессиональное создание сайтов. Современный дизайн, адаптивная верстка, быстрое выполнение.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>🚀 Мой сайт в интернете!</h1>
-    <p>Я сделал это через GitHub Pages!</p>
-    <button onclick="alert('Круто! Сайт работает! 🎉')">Нажми меня</button>
-    <p>Ссылка: https://asdgor.github.io/mega/</p>
+    <!-- Хедер -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Asdgor.dev</div>
+            <div class="nav-links">
+                <a href="#home">Главная</a>
+                <a href="#skills">Навыки</a>
+                <a href="#portfolio">Портфолио</a>
+                <a href="#contact">Контакты</a>
+            </div>
+            <div class="menu-btn">☰</div>
+        </nav>
+    </header>
+
+    <!-- Герой секция -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Создаю сайты, которые <span class="highlight">продают</span></h1>
+                <p>От идеи до запуска за 7 дней. Современный дизайн, чистый код, результат.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="scrollToSection('portfolio')">Смотреть работы</button>
+                    <button class="btn-secondary" onclick="openModal()">Обсудить проект</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="code-animation">
+                    <div class="code-line"></div>
+                    <div class="code-line"></div>
+                    <div class="code-line"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Навыки -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2>Мои навыки</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <h3>Frontend</h3>
+                    <p>HTML5, CSS3, JavaScript, Адаптивная верстка</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3>Дизайн</h3>
+                    <p>Современный UI/UX, Figma, Mobile First</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚡</div>
+                    <h3>Оптимизация</h3>
+                    <p>Быстрая загрузка, SEO, Кроссбраузерность</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>Мои работы</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" onclick="showProject(1)">
+                    <div class="portfolio-image">🛒</div>
+                    <h3>Интернет-магазин</h3>
+                    <p>Лендинг для продажи товаров</p>
+                </div>
+                <div class="portfolio-item" onclick="showProject(2)">
+                    <div class="portfolio-image">🏢</div>
+                    <h3>Корпоративный сайт</h3>
+                    <p>Сайт для строительной компании</p>
+                </div>
+                <div class="portfolio-item" onclick="showProject(3)">
+                    <div class="portfolio-image">🎓</div>
+                    <h3>Образовательная платформа</h3>
+                    <p>Сайт для онлайн-курсов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Свяжитесь со мной</h2>
+            <form class="contact-form" onsubmit="sendForm(event)">
+                <input type="text" placeholder="Ваше имя" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Опишите ваш проект" rows="5" required></textarea>
+                <button type="submit" class="btn-primary">Отправить сообщение</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Asdgor. Все права защищены</p>
+            <p>Сайт сделан с ❤️ и большим количеством кофе</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h3>Обсудим ваш проект?</h3>
+            <p>Заполните форму и я свяжусь с вами в течение 24 часов</p>
+            <form onsubmit="sendModalForm(event)">
+                <input type="text" placeholder="Как к вам обращаться?" required>
+                <input type="tel" placeholder="Телефон или Telegram" required>
+                <textarea placeholder="Краткое описание проекта" required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
