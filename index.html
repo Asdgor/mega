@@ -1,197 +1,285 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SY1KA — Веб-разработчик</title>
-  <meta name="description" content="Создаю современные сайты с аккуратным дизайном, быстрыми анимациями и результатом. Telegram: @sy1ka" />
-  <!-- Favicon (простая SVG) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6b6b'/%3E%3Ctext x='50'%20y='58' font-size='40' text-anchor='middle' fill='white' font-family='Inter,Arial,Helvetica'%3ES%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Meta for social preview -->
-  <meta property="og:title" content="SY1KA — Веб-разработчик" />
-  <meta property="og:description" content="Современные сайты с характером. Telegram: @sy1ka" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sy1ka | Веб-разработчик</title>
+    <meta name="description" content="Создаю уникальные сайты, которые выделяются. Современный дизайн, анимации, результат.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Cursor (desktop only) -->
-  <div id="cursor" class="cursor" aria-hidden="true"></div>
+    <!-- Курсор-круг -->
+    <div class="cursor"></div>
+    
+    <!-- Хедер -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <span class="logo-text">SY1KA</span>
+                <div class="logo-dot"></div>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">Главная</a>
+                <a href="#works" class="nav-link">Работы</a>
+                <a href="#stack" class="nav-link">Стек</a>
+                <a href="#contact" class="nav-link">Контакты</a>
+            </div>
+            <div class="nav-actions">
+                <a href="https://t.me/sy1ka" class="tg-btn" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    Написать
+                </a>
+            </div>
+            <div class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container nav-row">
-      <a class="logo" href="#home" aria-label="SY1KA — главная">
-        <span class="logo-text">SY1KA</span>
-        <span class="logo-dot" aria-hidden="true"></span>
-      </a>
-
-      <nav class="nav-links" id="nav-links">
-        <a href="#home" class="nav-link">Главная</a>
-        <a href="#works" class="nav-link">Работы</a>
-        <a href="#stack" class="nav-link">Стек</a>
-        <a href="#contact" class="nav-link">Контакты</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a class="tg-btn" href="https://t.me/sy1ka" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> Написать</a>
-      </div>
-
-      <button id="burger" class="burger" aria-label="Открыть меню" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <main>
+    <!-- Герой -->
     <section id="home" class="hero">
-      <div class="hero-bg" aria-hidden="true">
-        <div class="shape s1"></div>
-        <div class="shape s2"></div>
-        <div class="shape s3"></div>
-      </div>
-
-      <div class="container hero-grid">
-        <div class="hero-left">
-          <div class="badge">🚀 Доступен для проектов</div>
-          <h1 class="hero-title">
-            <span>Сайты, которые</span>
-            <span><span id="typing" class="typing">впечатляют</span><span class="blink">|</span></span>
-          </h1>
-          <p class="lead">Создаю аккуратные цифровые продукты с фокусом на UX, производительность и результат.</p>
-
-          <div class="hero-cta">
-            <a class="btn primary" href="#works"><i class="fas fa-eye"></i> Смотреть работы</a>
-            <a class="btn ghost" href="https://t.me/sy1ka" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> Обсудить проект</a>
-          </div>
-
-          <div class="stats">
-            <div class="stat"><div class="num">10+</div><div class="label">Проектов</div></div>
-            <div class="stat"><div class="num">100%</div><div class="label">Качество</div></div>
-            <div class="stat"><div class="num">7дн</div><div class="label">Сроки</div></div>
-          </div>
+        <div class="hero-bg">
+            <div class="bg-shape shape-1"></div>
+            <div class="bg-shape shape-2"></div>
+            <div class="bg-shape shape-3"></div>
         </div>
-
-        <aside class="hero-right" aria-hidden="true">
-          <div class="card floating card-a"><i class="fas fa-code"></i><span>Чистый код</span></div>
-          <div class="card floating card-b"><i class="fas fa-mobile-alt"></i><span>Адаптив</span></div>
-          <div class="card floating card-c"><i class="fas fa-bolt"></i><span>Скорость</span></div>
-        </aside>
-      </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🚀 Доступен для проектов</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    <span class="title-line">Сайты, которые</span>
+                    <span class="title-line">
+                        <span class="typing-text">впечатляют</span>
+                        <span class="cursor-blinking">|</span>
+                    </span>
+                </h1>
+                
+                <p class="hero-description">
+                    Создаю цифровые продукты с характером. Не просто код — а опыт, 
+                    который цепляет и решает бизнес-задачи.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="#works" class="btn btn-primary">
+                        <span>Смотреть работы</span>
+                        <i class="fas fa-arrow-down"></i>
+                    </a>
+                    <a href="https://t.me/sy1ka" class="btn btn-secondary" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                        Обсудить проект
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Проектов</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Качество</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">7дн</div>
+                        <div class="stat-label">Сроки</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <div class="card-content">
+                        <i class="fas fa-code"></i>
+                        <span>Чистый код</span>
+                    </div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-content">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Адаптив</span>
+                    </div>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="card-content">
+                        <i class="fas fa-bolt"></i>
+                        <span>Скорость</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- WORKS -->
-    <section id="works" class="section works">
-      <div class="container">
-        <div class="section-head">
-          <h2>Избранные работы</h2>
-          <p class="muted">Проекты, которые показывают мой подход</p>
+    <!-- Работы -->
+    <section id="works" class="works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Избранные работы</h2>
+                <p class="section-subtitle">Проекты, которыми горжусь</p>
+            </div>
+            
+            <div class="works-grid">
+                <div class="work-card">
+                    <div class="work-image">
+                        <div class="work-badge">Новый</div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EИнтернет-магазин%3C/text%3E%3C/svg%3E" alt="Интернет-магазин">
+                    </div>
+                    <div class="work-content">
+                        <h3>E-commerce платформа</h3>
+                        <p>Многостраничный магазин с корзиной и фильтрами</p>
+                        <div class="work-tech">
+                            <span>HTML/CSS</span>
+                            <span>JavaScript</span>
+                            <span>API</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="work-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EКорпоративный сайт%3C/text%3E%3C/svg%3E" alt="Корпоративный сайт">
+                    </div>
+                    <div class="work-content">
+                        <h3>Корпоративный портал</h3>
+                        <p>Сайт для строительной компании с каталогом услуг</p>
+                        <div class="work-tech">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="work-card">
+                    <div class="work-image">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234ecdc4'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EЛендинг%3C/text%3E%3C/svg%3E" alt="Лендинг">
+                    </div>
+                    <div class="work-content">
+                        <h3>Продающий лендинг</h3>
+                        <p>Высококонверсионная страница для IT-компании</p>
+                        <div class="work-tech">
+                            <span>Vue.js</span>
+                            <span>GSAP</span>
+                            <span>SEO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="grid works-grid">
-          <!-- Work 1 -->
-          <article class="work-card hover-3d" data-tilt>
-            <div class="work-media">
-              <img src="assets/img/work1.svg" alt="Интернет-магазин — превью" loading="lazy">
-            </div>
-            <div class="work-body">
-              <h3>E-commerce платформа</h3>
-              <p>Многостраничный магазин — быстрая корзина, удобный фильтр, PWA.</p>
-              <div class="tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-            </div>
-          </article>
-
-          <!-- Work 2 -->
-          <article class="work-card hover-3d" data-tilt>
-            <div class="work-media">
-              <img src="assets/img/work2.svg" alt="Корпоративный сайт — превью" loading="lazy">
-            </div>
-            <div class="work-body">
-              <h3>Корпоративный портал</h3>
-              <p>Информативный сайт с каталогом услуг и системой заявок.</p>
-              <div class="tags"><span>React</span><span>Node.js</span><span>API</span></div>
-            </div>
-          </article>
-
-          <!-- Work 3 -->
-          <article class="work-card hover-3d" data-tilt>
-            <div class="work-media">
-              <img src="assets/img/work3.svg" alt="Лендинг — превью" loading="lazy">
-            </div>
-            <div class="work-body">
-              <h3>Продающий лендинг</h3>
-              <p>Лэндинг с фокусом на конверсию и SEO-оптимизацию.</p>
-              <div class="tags"><span>Vue</span><span>GSAP</span><span>SEO</span></div>
-            </div>
-          </article>
-        </div>
-      </div>
     </section>
 
-    <!-- STACK -->
-    <section id="stack" class="section stack">
-      <div class="container">
-        <div class="section-head">
-          <h2>Технологии</h2>
-          <p class="muted">Инструменты, с которыми работаю</p>
+    <!-- Стек -->
+    <section id="stack" class="stack">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Технологии</h2>
+                <p class="section-subtitle">Инструменты, которые использую</p>
+            </div>
+            
+            <div class="stack-grid">
+                <div class="tech-category">
+                    <h3>Frontend</h3>
+                    <div class="tech-list">
+                        <div class="tech-item">HTML5</div>
+                        <div class="tech-item">CSS3/SCSS</div>
+                        <div class="tech-item">JavaScript</div>
+                        <div class="tech-item">React</div>
+                        <div class="tech-item">Vue.js</div>
+                    </div>
+                </div>
+                
+                <div class="tech-category">
+                    <h3>Backend</h3>
+                    <div class="tech-list">
+                        <div class="tech-item">Node.js</div>
+                        <div class="tech-item">Python</div>
+                        <div class="tech-item">MongoDB</div>
+                        <div class="tech-item">PostgreSQL</div>
+                    </div>
+                </div>
+                
+                <div class="tech-category">
+                    <h3>Инструменты</h3>
+                    <div class="tech-list">
+                        <div class="tech-item">Git</div>
+                        <div class="tech-item">Figma</div>
+                        <div class="tech-item">Webpack</div>
+                        <div class="tech-item">Docker</div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="grid stack-grid">
-          <div class="card tech">
-            <h4>Frontend</h4>
-            <ul><li>HTML5</li><li>CSS3 / SCSS</li><li>JavaScript</li><li>React / Vue</li></ul>
-          </div>
-          <div class="card tech">
-            <h4>Backend</h4>
-            <ul><li>Node.js</li><li>Python</li><li>PostgreSQL</li><li>MongoDB</li></ul>
-          </div>
-          <div class="card tech">
-            <h4>Инструменты</h4>
-            <ul><li>Git</li><li>Figma</li><li>Webpack / Vite</li><li>Docker</li></ul>
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact" class="section contact">
-      <div class="container contact-grid">
-        <div class="contact-left">
-          <h2>Готов к новым вызовам</h2>
-          <p>Есть проект? Пиши в Telegram — <a href="https://t.me/sy1ka" target="_blank" rel="noopener noreferrer">@sy1ka</a> или заполни форму.</p>
-          <div class="contact-links">
-            <a href="https://t.me/sy1ka" target="_blank" class="link"><i class="fab fa-telegram"></i> @sy1ka</a>
-            <a href="mailto:hello@sy1ka.ru" class="link"><i class="fas fa-envelope"></i> hello@sy1ka.ru</a>
-          </div>
+    <!-- Контакты -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Готов к новым вызовам</h2>
+                    <p>Есть проект? Давайте обсудим и сделаем что-то крутое вместе!</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://t.me/sy1ka" class="contact-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            <span>@sy1ka</span>
+                        </a>
+                        <a href="mailto:hello@sy1ka.ru" class="contact-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>hello@sy1ka.ru</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="project-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Как к вам обращаться?" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email для связи" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Расскажите о проекте..." rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <span>Обсудить проект</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <form id="project-form" class="contact-form" aria-label="Форма связи">
-          <input name="name" type="text" placeholder="Имя" required>
-          <input name="email" type="email" placeholder="Email" required>
-          <textarea name="message" rows="5" placeholder="Коротко про проект..." required></textarea>
-          <div class="form-row">
-            <button type="submit" class="btn primary">Отправить</button>
-            <div id="form-status" class="form-status" aria-live="polite"></div>
-          </div>
-        </form>
-      </div>
     </section>
-  </main>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="brand">SY1KA <span class="logo-dot"></span></div>
-      <p class="muted">Создаю цифровые продукты с 2024 • <a href="https://t.me/sy1ka" target="_blank">@sy1ka</a></p>
-      <div class="socials"><a href="https://t.me/sy1ka" target="_blank"><i class="fab fa-telegram"></i></a><a href="#" aria-hidden="true"><i class="fab fa-github"></i></a></div>
-    </div>
-  </footer>
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span>SY1KA</span>
+                    <div class="logo-dot"></div>
+                </div>
+                <p>Создаю цифровые продукты с 2024 года</p>
+                <div class="footer-links">
+                    <a href="https://t.me/sy1ka" target="_blank">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <!-- Main script -->
-  <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
