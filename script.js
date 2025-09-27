@@ -364,3 +364,19 @@ function showNotification(message) {
         notification.remove();
     }, 3000);
 }
+// Базовая защита от XSS
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
+}
+
+// Защита форм
+function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Логирование попыток взлома (для крутости)
+function logSecurityEvent(event) {
+    console.log(`🔒 Security Event: ${event} at ${new Date().toLocaleString()}`);
+}
