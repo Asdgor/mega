@@ -1,13 +1,175 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sy1ka | Веб-разработчик</title>
+    <meta name="description" content="Профессиональный веб-разработчик. Создаю современные сайты с уникальным дизайном.">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 </head>
 <body>
-    <header class="header">...</header>
-    <section class="hero">...</section>
-    <!-- остальные секции -->
-    <script src="script.js"></script>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">SY1KA</div>
+            <div class="nav-links">
+                <a href="#home">Главная</a>
+                <a href="#works">Работы</a>
+                <a href="#skills">Навыки</a>
+                <a href="#contact">Контакты</a>
+            </div>
+            <a href="https://t.me/sy1ka" class="tg-btn" target="_blank">Написать в TG</a>
+            <div class="menu-btn">☰</div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Сайты, которые <span class="highlight">продают</span></h1>
+                <p>Создаю цифровые продукты, которые решают бизнес-задачи и нравятся людям</p>
+                <div class="hero-actions">
+                    <a href="#works" class="btn btn-primary">Смотреть работы</a>
+                    <a href="#contact" class="btn btn-secondary">Обсудить проект</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">10+ проектов</div>
+                    <div class="stat">100% качество</div>
+                    <div class="stat">7 дней срок</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Works -->
+    <section id="works" class="works">
+        <div class="container">
+            <h2>Мои работы</h2>
+            <div class="works-grid">
+                <div class="work-card" onclick="openModal(1)">
+                    <div class="work-image">🛒</div>
+                    <h3>Интернет-магазин</h3>
+                    <p>Лендинг для продажи товаров</p>
+                </div>
+                <div class="work-card" onclick="openModal(2)">
+                    <div class="work-image">🏢</div>
+                    <h3>Корпоративный сайт</h3>
+                    <p>Сайт для строительной компании</p>
+                </div>
+                <div class="work-card" onclick="openModal(3)">
+                    <div class="work-image">🎓</div>
+                    <h3>Образовательная платформа</h3>
+                    <p>Сайт для онлайн-курсов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Свяжитесь со мной</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <p>Готов обсудить ваш проект!</p>
+                    <a href="https://t.me/sy1ka" class="contact-link" target="_blank">
+                        💬 Telegram: @sy1ka
+                    </a>
+                </div>
+                <form class="contact-form" onsubmit="sendMessage(event)">
+                    <input type="text" placeholder="Ваше имя" required>
+                    <input type="email" placeholder="Email" required>
+                    <textarea placeholder="Опишите проект..." required></textarea>
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Sy1ka. Сделано с ❤️</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h3 id="modal-title">Проект</h3>
+            <p id="modal-description">Описание проекта</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Мобильное меню
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Модалки
+        function openModal(id) {
+            const projects = {
+                1: { title: "Интернет-магазин", desc: "Полнофункциональный магазин с корзиной и оплатой" },
+                2: { title: "Корпоративный сайт", desc: "Сайт для компании с каталогом услуг" },
+                3: { title: "Образовательная платформа", desc: "Платформа для онлайн-курсов" }
+            };
+            
+            document.getElementById('modal-title').textContent = projects[id].title;
+            document.getElementById('modal-description').textContent = projects[id].desc;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Форма
+        function sendMessage(e) {
+            e.preventDefault();
+            alert('Сообщение отправлено! Свяжусь с вами в Telegram 📧');
+            e.target.reset();
+        }
+
+        // Анимация при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.work-card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+
+        console.log('🚀 Сайт загружен!');
+    </script>
 </body>
 </html>
