@@ -3,109 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tonkeeper P2P Pro</title>
+    <title>Tonkeeper Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; display: flex; flex-direction: column; }
-        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; backdrop-filter: blur(12px); }
-        .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 32px 32px 0 0; padding: 24px; background: #1c1c1e; border-top: 1px solid #333; }
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; overflow: hidden; background: #000; }
+        
+        /* Модалки */
+        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(15px); }
+        .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 32px 32px 0 0; padding: 24px; background: #1c1c1e; }
+        
+        /* Меню профиля */
+        #profile-menu { position: absolute; top: 0; left: -100%; width: 85%; height: 100%; background: #1c1c1e; z-index: 2000; transition: 0.3s; padding: 30px; border-right: 1px solid #333; }
+        #profile-menu.active { left: 0; }
+
         .ton-blue { background-color: #007aff; }
         .bg-card { background-color: #1c1c1e; }
         .hidden { display: none !important; }
-        button:active { transform: scale(0.96); transition: 0.1s; }
-        .scroll-hide::-webkit-scrollbar { display: none; }
+        
+        /* Исправление скролла */
+        .scrollable { overflow-y: auto; height: calc(100vh - 180px); scrollbar-width: none; }
+        .scrollable::-webkit-scrollbar { display: none; }
+        
+        button:active { transform: scale(0.96); }
     </style>
 </head>
-<body class="flex items-center justify-center">
+<body>
 
-    <div class="app-container w-full shadow-2xl overflow-hidden relative bg-black">
+    <div class="app-container">
         
-        <div id="wallet-screen" class="flex flex-col h-full w-full p-6">
-            <header class="text-center pt-4 mb-8">
+        <div id="profile-menu">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black">Настройки</h2>
+                <button onclick="closeProfile()" class="text-3xl text-gray-500">✕</button>
+            </div>
+            <div class="space-y-6">
+                <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl"><span>Тема</span><span class="text-blue-500 font-bold">Темная</span></div>
+                <div class="flex justify-between items-center p-4 bg-white/5 rounded-2xl"><span>Валюта</span><span class="opacity-50">USD</span></div>
+                <div class="p-4 bg-white/5 rounded-2xl opacity-50">Безопасность</div>
+                <div class="p-4 bg-red-500/10 text-red-500 rounded-2xl text-center font-bold mt-20">Выйти</div>
+            </div>
+        </div>
+
+        <div id="wallet-screen" class="p-6 h-full flex flex-col">
+            <header class="mb-8">
                 <div class="flex justify-between items-center mb-10">
-                    <button onclick="alert('Profile')" class="w-11 h-11 rounded-full bg-card flex items-center justify-center border border-white/5 text-blue-400 text-lg">👤</button>
-                    <div class="font-black text-xs uppercase tracking-[0.2em] opacity-80">Wallet</div>
-                    <button class="w-11 h-11 rounded-full bg-card flex items-center justify-center border border-white/5 text-lg">🔍</button>
+                    <button onclick="openProfile()" class="w-11 h-11 rounded-full bg-card flex items-center justify-center text-blue-400 text-xl">👤</button>
+                    <div class="font-black text-xs uppercase tracking-widest">Wallet</div>
+                    <button class="w-11 h-11 rounded-full bg-card flex items-center justify-center text-xl">🔍</button>
                 </div>
-                <p class="opacity-40 text-[10px] font-black uppercase tracking-[0.15em] mb-2">Total Balance</p>
-                <h1 class="text-[44px] font-black tracking-tighter mb-10">$ <span id="main-balance">2,313.24</span></h1>
-                <div class="flex justify-center gap-10">
-                    <button onclick="openModal('send-modal')" class="flex flex-col items-center gap-3">
-                        <div class="ton-blue w-[70px] h-[70px] rounded-[24px] flex items-center justify-center text-white text-3xl shadow-lg">↑</div>
-                        <span class="text-[11px] font-bold uppercase opacity-50 tracking-wider">Send</span>
-                    </button>
-                    <button onclick="openP2P()" class="flex flex-col items-center gap-3">
-                        <div class="ton-blue w-[70px] h-[70px] rounded-[24px] flex items-center justify-center text-white text-3xl shadow-lg">⇆</div>
-                        <span class="text-[11px] font-bold uppercase opacity-50 tracking-wider">P2P</span>
-                    </button>
+                <div class="text-center">
+                    <p class="opacity-30 text-[10px] font-black uppercase mb-1">Total Balance</p>
+                    <h1 class="text-[46px] font-black tracking-tighter mb-10">$ <span id="main-balance">2,313.24</span></h1>
+                    <div class="flex justify-center gap-10">
+                        <button onclick="alert('Отправка...')" class="flex flex-col items-center gap-3">
+                            <div class="ton-blue w-[72px] h-[72px] rounded-[26px] flex items-center justify-center text-3xl shadow-lg">↑</div>
+                            <span class="text-[11px] font-bold uppercase opacity-50">Send</span>
+                        </button>
+                        <button onclick="openP2P()" class="flex flex-col items-center gap-3">
+                            <div class="ton-blue w-[72px] h-[72px] rounded-[26px] flex items-center justify-center text-3xl shadow-lg">⇆</div>
+                            <span class="text-[11px] font-bold uppercase opacity-50">P2P</span>
+                        </button>
+                    </div>
                 </div>
             </header>
             <main class="flex-1">
-                <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.15em] mb-6">Your Assets</p>
+                <p class="text-[10px] font-black opacity-30 uppercase mb-6 tracking-widest">Your Assets</p>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl shadow-lg">💎</div>
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl">💎</div>
                         <div><p class="font-bold">Toncoin</p><p class="text-[11px] opacity-40">$5.42</p></div>
                     </div>
-                    <div class="text-right">
-                        <p class="font-black text-xl tracking-tight"><span id="ton-count">477,5</span> TON</p>
-                    </div>
+                    <p class="font-black text-xl tracking-tight"><span id="ton-count">477,5</span> TON</p>
                 </div>
             </main>
         </div>
 
         <div id="p2p-screen" class="hidden absolute inset-0 bg-black z-50 flex flex-col">
-            <div class="p-6 border-b border-white/5">
-                <header class="flex items-center gap-4 mb-6">
+            <div class="p-6">
+                <div class="flex items-center gap-4 mb-6">
                     <button onclick="closeP2P()" class="text-3xl">←</button>
                     <h1 class="text-2xl font-black italic">P2P Market</h1>
-                </header>
-                <div class="flex gap-6"><button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button><button class="pb-2 opacity-30 font-bold text-gray-500">Sell</button></div>
+                </div>
+                <div class="flex gap-6 border-b border-white/5"><button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button><button class="pb-2 opacity-20 font-bold">Sell</button></div>
             </div>
-            <div class="flex-1 overflow-y-auto p-4 space-y-3 scroll-hide">
-                <div class="p-5 bg-card rounded-[28px] border border-white/5 flex justify-between items-end">
-                    <div><span class="font-bold text-blue-400 block mb-1">Merchant_God 👑</span><p class="text-2xl font-black">502.40 ₽</p><p class="text-[10px] opacity-30">Limit: 100 - 50k ₽</p></div>
-                    <button onclick="startOrder(10)" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm">BUY</button>
-                </div>
-                <div class="p-5 bg-card rounded-[28px] border border-white/5 flex justify-between items-end">
-                    <div><span class="font-bold text-blue-400 block mb-1">Crypto_X ⚡</span><p class="text-2xl font-black">503.10 ₽</p><p class="text-[10px] opacity-30">Limit: 500 - 100k ₽</p></div>
-                    <button onclick="startOrder(25)" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm">BUY</button>
-                </div>
-                <div class="p-5 bg-card rounded-[28px] border border-white/5 flex justify-between items-end">
-                    <div><span class="font-bold text-blue-400 block mb-1">Ton_Master</span><p class="text-2xl font-black">505.00 ₽</p><p class="text-[10px] opacity-30">Limit: 10 - 5k ₽</p></div>
-                    <button onclick="startOrder(5)" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm">BUY</button>
-                </div>
-                <div class="p-5 bg-card rounded-[28px] border border-white/5 flex justify-between items-end">
-                    <div><span class="font-bold text-blue-400 block mb-1">Shark_Deals</span><p class="text-2xl font-black">508.45 ₽</p><p class="text-[10px] opacity-30">Limit: 1k - 1M ₽</p></div>
-                    <button onclick="startOrder(100)" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm">BUY</button>
-                </div>
+            
+            <div class="flex-1 scrollable px-6 space-y-4">
+                <script>
+                    const names = ['Merchant_God', 'CryptoShark', 'TonKing', 'SberP2P', 'Fast_Change', 'Elite_Trade', 'Zero_Fee', 'Bull_Market'];
+                    for(let i=0; i<names.length; i++) {
+                        document.write(`
+                            <div class="p-5 bg-card rounded-[28px] border border-white/5 flex justify-between items-end">
+                                <div><span class="font-bold text-blue-400 block mb-1">${names[i]}</span><p class="text-2xl font-black">${500 + i}.40 ₽</p><p class="text-[10px] opacity-30">Limit: 100 - 100k ₽</p></div>
+                                <button onclick="startOrder(${10 + i * 5})" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm">BUY</button>
+                            </div>
+                        `);
+                    }
+                </script>
             </div>
         </div>
 
-        <div id="payment-modal" class="modal">
+        <div id="bank-modal" class="modal">
             <div class="modal-content">
-                <h2 class="text-xl font-black mb-6 text-center">Payment Method</h2>
+                <h2 class="text-xl font-black mb-6 text-center">Способ оплаты</h2>
                 <div class="space-y-3">
-                    <button onclick="alert('Bank offline')" class="w-full p-5 bg-white/5 rounded-2xl text-left flex justify-between items-center font-bold"><span>📲 СБП</span><span class="opacity-20">0%</span></button>
-                    <button onclick="alert('Bank offline')" class="w-full p-5 bg-white/5 rounded-2xl text-left flex justify-between items-center font-bold"><span>💛 Tinkoff</span><span class="opacity-20">0%</span></button>
-                    <button onclick="openPinModal()" class="w-full p-5 bg-blue-600 rounded-2xl text-left flex justify-between items-center font-bold shadow-lg"><span>💳 Bank Card</span><span class="text-[10px] bg-black/30 px-2 py-1 rounded">UNLIMITED</span></button>
+                    <button onclick="alert('Оффлайн')" class="w-full p-5 bg-white/5 rounded-2xl text-left font-bold flex justify-between"><span>📲 СБП</span><span class="opacity-20 italic">оффлайн</span></button>
+                    <button onclick="alert('Оффлайн')" class="w-full p-5 bg-white/5 rounded-2xl text-left font-bold flex justify-between"><span>💛 Тинькофф</span><span class="opacity-20 italic">оффлайн</span></button>
+                    <button onclick="openPin()" class="w-full p-5 bg-blue-600 rounded-2xl text-left font-bold flex justify-between items-center">
+                        <span>💳 Банковская карта</span>
+                        <span class="text-[10px] bg-black/30 px-2 py-1 rounded">UNLIMITED</span>
+                    </button>
                 </div>
-                <button onclick="closeModal('payment-modal')" class="w-full mt-6 opacity-30 font-bold">Cancel</button>
+                <button onclick="closeModal('bank-modal')" class="w-full mt-6 opacity-30 font-bold uppercase text-[10px]">Отмена</button>
             </div>
         </div>
 
         <div id="pin-modal" class="modal">
-            <div class="modal-content">
-                <div class="text-center mb-8">
-                    <div class="text-4xl mb-4">🔐</div>
-                    <h2 class="text-xl font-black tracking-tight">Enter Pin Code</h2>
-                    <p class="text-xs opacity-40 mt-1">To complete unlimited transaction</p>
-                </div>
-                <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="w-full p-6 rounded-[24px] text-center text-4xl tracking-[0.8em] mb-8 outline-none bg-black border border-white/10 font-black">
-                <button onclick="verifyTransaction()" class="w-full ton-blue py-5 rounded-[24px] font-black text-xl shadow-2xl">PAY NOW</button>
-                <button onclick="closeModal('pin-modal')" class="w-full mt-4 opacity-30">Back</button>
+            <div class="modal-content text-center">
+                <div class="mb-8"><div class="text-4xl mb-4">🔐</div><h2 class="text-xl font-black">Введите код</h2><p class="text-xs opacity-40">Подтверждение безлимитной оплаты</p></div>
+                <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="w-full p-6 rounded-[24px] text-center text-4xl tracking-[0.5em] mb-8 bg-black border border-white/10 outline-none font-black">
+                <button onclick="confirmPay()" class="w-full ton-blue py-5 rounded-[24px] font-black text-xl shadow-2xl">ОПЛАТИТЬ</button>
+                <button onclick="closeModal('pin-modal')" class="w-full mt-4 opacity-30">Назад</button>
             </div>
         </div>
 
@@ -114,35 +133,29 @@
     <script>
         let balance = 2313.24;
         let tonCount = 477.5;
-        let currentOrderTon = 0;
+        let pendingTon = 0;
+
+        function openProfile() { document.getElementById('profile-menu').classList.add('active'); }
+        function closeProfile() { document.getElementById('profile-menu').classList.remove('active'); }
 
         function openP2P() { document.getElementById('p2p-screen').classList.remove('hidden'); }
         function closeP2P() { document.getElementById('p2p-screen').classList.add('hidden'); }
+
+        function startOrder(amt) { pendingTon = amt; openModal('bank-modal'); }
+        function openPin() { closeModal('bank-modal'); openModal('pin-modal'); }
+
         function openModal(id) { document.getElementById(id).style.display = 'block'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function startOrder(tonAmt) {
-            currentOrderTon = tonAmt;
-            openModal('payment-modal');
-        }
-
-        function openPinModal() {
-            closeModal('payment-modal');
-            openModal('pin-modal');
-        }
-
-        function verifyTransaction() {
-            const pin = document.getElementById('pin-input').value;
-            if (pin === "585823") {
-                tonCount += currentOrderTon;
-                balance += (currentOrderTon * 5.42);
+        function confirmPay() {
+            if (document.getElementById('pin-input').value === "585823") {
+                tonCount += pendingTon;
+                balance += (pendingTon * 5.42);
                 updateUI();
-                alert(`Transaction Approved! +${currentOrderTon} TON`);
+                alert(`Успех! Куплено ${pendingTon} TON`);
                 closeModal('pin-modal');
                 closeP2P();
-            } else {
-                alert("Invalid PIN");
-            }
+            } else { alert("Неверный код!"); }
             document.getElementById('pin-input').value = "";
         }
 
