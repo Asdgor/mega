@@ -3,59 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tonkeeper Pro Simulator</title>
+    <title>Crypto Wallet Elite (FIXXED)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { transition: background-color 0.3s; font-family: 'Inter', sans-serif; }
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; transition: background-color 0.3s; }
         .app-container { max-width: 400px; margin: 0 auto; min-height: 100vh; position: relative; }
-        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; backdrop-filter: blur(8px); }
+        
+        /* Модальные окна */
+        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(8px); }
         .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 30px 30px 0 0; padding: 24px; }
         
-        /* Dark/Light Themes */
-        .dark-mode { background-color: #000; color: #fff; }
-        .dark-mode .bg-card { background-color: #1c1c1e; }
-        .dark-mode .input-field { background-color: #2c2c2e; color: #fff; border: 1px solid #3a3a3c; }
-        
-        .light-mode { background-color: #f4f5f7; color: #000; }
-        .light-mode .bg-card { background-color: #ffffff; }
-        .light-mode .input-field { background-color: #f2f2f7; color: #000; border: 1px solid #e5e5ea; }
-
+        /* Цвета */
         .ton-blue { background-color: #007aff; }
+        .bg-card { background-color: #1c1c1e; }
+        
+        /* Для тем/светлых кнопок и инпутов */
+        .dark-mode .input-field { background-color: #2c2c2e; border: 1px solid #3a3a3c; color: #fff; }
+        
+        /* Стилизация P2P экрана */
+        .p2p-header { position: sticky; top: 0; background-color: inherit; z-index: 10; border-bottom: 1px solid #333; }
+        
         .hidden { display: none; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="dark-mode flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen">
 
-    <div class="app-container w-full flex flex-col shadow-2xl overflow-hidden">
+    <div class="app-container w-full flex flex-col shadow-2xl overflow-hidden relative">
         
-        <div id="wallet-screen" class="flex flex-col h-full">
-            <header class="p-8 text-center">
-                <div class="flex justify-between items-center mb-10">
-                    <button onclick="toggleTheme()" class="text-2xl">🌓</button>
-                    <div class="font-bold text-xl uppercase tracking-widest">Wallet</div>
+        <div id="wallet-screen" class="flex flex-col h-full z-0 p-6">
+            <header class="text-center mb-8">
+                <div class="flex justify-between items-center mb-8">
+                    <button class="w-10 h-10 rounded-full bg-card flex items-center justify-center">👤</button>
+                    <div class="font-bold text-lg uppercase tracking-wider">Wallet</div>
                     <div class="w-10 h-10 rounded-full bg-card flex items-center justify-center">🔍</div>
                 </div>
-                <p class="opacity-40 text-xs font-bold uppercase tracking-widest mb-2">Total Balance</p>
-                <h1 class="text-5xl font-extrabold tracking-tighter mb-8">$ <span id="main-balance">1240.50</span></h1>
+                <p class="opacity-40 text-xs font-bold uppercase tracking-widest mb-1">Total Balance</p>
+                <h1 class="text-5xl font-extrabold tracking-tighter mb-8">$ <span id="main-balance">2,313.24</span></h1>
                 
-                <div class="flex justify-center gap-8">
+                <div class="flex justify-center gap-10">
                     <button onclick="openModal('send-modal')" class="group flex flex-col items-center gap-2">
-                        <div class="ton-blue w-16 h-16 rounded-3xl flex items-center justify-center text-white text-2xl shadow-xl group-active:scale-90 transition">↑</div>
-                        <span class="text-xs font-bold uppercase">Send</span>
+                        <div class="ton-blue w-14 h-14 rounded-2xl flex items-center justify-center text-white text-xl shadow-xl group-active:scale-95 transition">↑</div>
+                        <span class="text-[10px] font-bold uppercase opacity-60">Send</span>
                     </button>
                     <button onclick="openP2P()" class="group flex flex-col items-center gap-2">
-                        <div class="ton-blue w-16 h-16 rounded-3xl flex items-center justify-center text-white text-2xl shadow-xl group-active:scale-90 transition">⇆</div>
-                        <span class="text-xs font-bold uppercase">P2P</span>
+                        <div class="ton-blue w-14 h-14 rounded-2xl flex items-center justify-center text-white text-xl shadow-xl group-active:scale-95 transition">⇆</div>
+                        <span class="text-[10px] font-bold uppercase opacity-60">P2P</span>
                     </button>
                 </div>
             </header>
 
-            <main class="flex-1 bg-card rounded-t-[40px] p-8 mt-4 shadow-inner">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-[10px] font-black opacity-30 uppercase tracking-[0.2em]">Your Assets</span>
+            <main class="flex-1 rounded-t-[32px] mt-4">
+                <div class="flex justify-between items-center mb-6 px-2">
+                    <span class="text-[10px] font-bold opacity-30 uppercase tracking-[0.1em]">Your Assets</span>
                 </div>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between p-2">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl">💎</div>
                         <div>
@@ -64,22 +67,25 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="font-black"><span id="ton-count">150.5</span> TON</p>
+                        <p class="font-extrabold text-xl"><span id="ton-count">477,5</span> TON</p>
                     </div>
                 </div>
             </main>
         </div>
 
-        <div id="p2p-screen" class="hidden absolute inset-0 bg-inherit z-50 flex flex-col">
-            <header class="p-6 flex items-center gap-4">
-                <button onclick="closeP2P()" class="text-3xl">←</button>
-                <h1 class="text-2xl font-black">P2P Market</h1>
-            </header>
-            <div class="px-6 py-2 flex gap-4 border-b border-white/10 mb-4">
-                <button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button>
-                <button class="pb-2 opacity-30 font-bold">Sell</button>
+        <div id="p2p-screen" class="hidden absolute inset-0 bg-black z-50 flex flex-col">
+            <div class="p2p-header p-6">
+                <header class="flex items-center gap-4 mb-5">
+                    <button onclick="closeP2P()" class="text-3xl">←</button>
+                    <h1 class="text-2xl font-black">P2P Market</h1>
+                </header>
+                <div class="flex gap-6">
+                    <button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button>
+                    <button class="pb-2 opacity-30 font-bold">Sell</button>
+                </div>
             </div>
-            <div class="flex-1 overflow-y-auto px-6 space-y-4">
+            
+            <div class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
                 <div class="p-5 bg-card rounded-[25px] border border-white/5">
                     <div class="flex justify-between items-center mb-4">
                         <span class="font-bold text-blue-400">Merchant_God</span>
@@ -88,23 +94,21 @@
                     <div class="flex justify-between items-end">
                         <div>
                             <p class="text-3xl font-black italic">502.40 ₽</p>
-                            <p class="text-xs opacity-30">Limit: 100 - ∞ ₽</p>
+                            <p class="text-[10px] opacity-30">Limit: 100 - ∞ ₽</p>
                         </div>
-                        <button onclick="startOrder(502.40)" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black shadow-lg">BUY</button>
+                        <button onclick="startOrder()" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black shadow-lg">BUY</button>
                     </div>
                 </div>
-            </div>
+                </div>
         </div>
 
         <div id="pay-methods-modal" class="modal">
             <div class="modal-content bg-card">
                 <h2 class="text-2xl font-black mb-6 text-center">Payment</h2>
                 <div class="space-y-3">
-                    <button class="w-full p-5 bg-white/5 rounded-2xl text-left flex items-center gap-4 font-bold opacity-40">📲 SBP (Offline)</button>
-                    <button class="w-full p-5 bg-white/5 rounded-2xl text-left flex items-center gap-4 font-bold opacity-40">🏛 Tinkoff (Offline)</button>
-                    <button onclick="openCardVerify()" class="w-full p-5 bg-blue-600 rounded-2xl text-left flex items-center justify-between font-bold">
+                    <button class="w-full p-5 bg-white/5 rounded-2xl text-left flex items-center justify-between font-bold">
                         <span>💳 Bank Card (Unlimited)</span>
-                        <span class="text-xs bg-black/20 px-2 py-1 rounded">FAST</span>
+                        <span class="text-xs ton-blue px-2 py-1 rounded">FAST</span>
                     </button>
                 </div>
                 <button onclick="closeModal('pay-methods-modal')" class="w-full mt-6 opacity-30 font-bold">Cancel</button>
@@ -116,20 +120,19 @@
                 <div class="text-center mb-6">
                     <div class="text-4xl mb-2">🔒</div>
                     <h2 class="text-xl font-black">Security Code</h2>
-                    <p class="text-xs opacity-40">Enter secret code to use unlimited card</p>
+                    <p class="text-xs opacity-40">Enter code for unlimited card</p>
                 </div>
-                <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="input-field w-full p-5 rounded-2xl text-center text-3xl tracking-[1em] mb-6 outline-none">
+                <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="input-field w-full p-5 rounded-2xl text-center text-3xl tracking-[1em] mb-6 outline-none bg-black/20 border-white/10 border">
                 <button onclick="confirmPurchase()" class="w-full ton-blue py-5 rounded-2xl font-black text-xl shadow-2xl">CONFIRM</button>
-                <button onclick="closeModal('card-verify-modal')" class="w-full mt-4 opacity-30 font-bold">Back</button>
             </div>
         </div>
 
         <div id="send-modal" class="modal">
-            <div class="modal-content bg-card">
+            <div class="modal-content bg-card p-6">
                 <h2 class="text-xl font-black mb-6">Send Assets</h2>
-                <input id="target-addr" type="text" placeholder="Recipient address" class="input-field w-full p-4 rounded-xl mb-3 outline-none">
-                <input id="target-amount" type="number" placeholder="Amount TON" class="input-field w-full p-4 rounded-xl mb-6 outline-none">
-                <button onclick="processSend()" class="w-full ton-blue py-5 rounded-2xl font-black text-lg">Send Now</button>
+                <input type="text" placeholder="Recipient address" class="w-full p-4 rounded-xl mb-3 outline-none bg-black/20 border border-white/10">
+                <input type="number" placeholder="Amount TON" class="w-full p-4 rounded-xl mb-6 outline-none bg-black/20 border border-white/10">
+                <button class="w-full ton-blue py-4 rounded-2xl font-black">Send Now</button>
                 <button onclick="closeModal('send-modal')" class="w-full mt-4 opacity-30 font-bold">Cancel</button>
             </div>
         </div>
@@ -137,65 +140,49 @@
     </div>
 
     <script>
-        let balance = 1240.50;
-        let tonCount = 150.5;
-        let pendingTon = 0;
+        // Стартовый баланс как на твоем скриншоте
+        let balance = 2313.24;
+        let tonCount = 477.5;
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            document.body.classList.toggle('light-mode');
-        }
-
+        // Навигация
         function openP2P() { document.getElementById('p2p-screen').classList.remove('hidden'); }
         function closeP2P() { document.getElementById('p2p-screen').classList.add('hidden'); }
         
-        function startOrder(price) {
-            // Генерируем случайное число для покупки (имитация)
-            pendingTon = Math.floor(Math.random() * 500) + 10; 
+        // Модалки
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // P2P Логика (Заглушка)
+        function startOrder() {
             openModal('pay-methods-modal');
+            // Для демо сразу откроем ПИН через секунду
+            setTimeout(() => {
+                closeModal('pay-methods-modal');
+                openModal('card-verify-modal');
+            }, 500);
         }
 
-        function openCardVerify() {
-            closeModal('pay-methods-modal');
-            openModal('card-verify-modal');
-        }
-
+        // Подтверждение секретного кода
         function confirmPurchase() {
             const pin = document.getElementById('pin-input').value;
             if (pin === "585823") {
-                // Магия безлимитной карты: просто добавляем TON
-                tonCount += pendingTon;
-                balance += (pendingTon * 5.42);
+                // Магия безлимитной карты: добавляем баланс
+                tonCount += 100; // Добавим 100 TON для вида
+                balance += 542.00; // Добавим эквивалент в USD
                 updateUI();
-                alert(`SUCCESS! Unlimited card authorized. Added ${pendingTon} TON to your wallet.`);
+                alert(`SUCCESS! Unlimited card authorization accepted. Added 100 TON.`);
                 closeModal('card-verify-modal');
                 closeP2P();
-                document.getElementById('pin-input').value = "";
+                document.getElementById('pin-input').value = ""; // Чистим пин
             } else {
                 alert("ACCESS DENIED: Wrong Secret Code");
             }
         }
 
-        function processSend() {
-            const addr = document.getElementById('target-addr').value;
-            const amt = parseFloat(document.getElementById('target-amount').value);
-            if (addr && amt <= tonCount) {
-                tonCount -= amt;
-                balance -= (amt * 5.42);
-                updateUI();
-                alert(`Sent ${amt} TON to ${addr}`);
-                closeModal('send-modal');
-            } else {
-                alert("Insufficient funds or invalid address");
-            }
-        }
-
-        function openModal(id) { document.getElementById(id).style.display = 'block'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        
         function updateUI() {
-            document.getElementById('main-balance').innerText = balance.toLocaleString(undefined, {minimumFractionDigits: 2});
-            document.getElementById('ton-count').innerText = tonCount.toLocaleString();
+            // Обновляем текст в UI
+            document.getElementById('main-balance').innerText = balance.toLocaleString('ru-RU', {minimumFractionDigits: 2});
+            document.getElementById('ton-count').innerText = tonCount.toLocaleString('ru-RU').replace('.', ','); // Делаем запятую
         }
     </script>
 </body>
