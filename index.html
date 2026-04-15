@@ -3,283 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sy1ka | Веб-разработчик</title>
-    <meta name="description" content="Создаю уникальные сайты, которые выделяются. Современный дизайн, анимации, результат.">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Tonkeeper Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f5f7; /* Светлая тема как в Tonkeeper */
+            font-family: 'Inter', sans-serif;
+        }
+        .app-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-col;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .action-btn {
+            background: #007aff; /* Фирменный синий TON */
+            border-radius: 16px;
+        }
+        .asset-card {
+            transition: transform 0.1s;
+        }
+        .asset-card:active {
+            transform: scale(0.98);
+        }
+    </style>
 </head>
-<body>
-    <!-- Курсор-круг -->
-    <div class="cursor"></div>
-    
-    <!-- Хедер -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">
-                <span class="logo-text">SY1KA</span>
-                <div class="logo-dot"></div>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="app-container w-full relative overflow-hidden flex flex-col">
+        
+        <header class="p-6 text-center">
+            <div class="flex justify-between items-center mb-6">
+                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">⚙️</div>
+                <div class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold">Wallet 1 ▾</div>
+                <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">🔍</div>
             </div>
-            <div class="nav-links">
-                <a href="#home" class="nav-link">Главная</a>
-                <a href="#works" class="nav-link">Работы</a>
-                <a href="#stack" class="nav-link">Стек</a>
-                <a href="#contact" class="nav-link">Контакты</a>
+            
+            <h2 class="text-gray-500 text-sm font-medium">Ваш баланс</h2>
+            <h1 class="text-4xl font-bold mt-1">$ 1,240.50</h1>
+            <p class="text-green-500 text-sm font-medium mt-1">+ $12.30 (1.1%)</p>
+        </header>
+
+        <div class="flex justify-around px-6 mb-8">
+            <div class="flex flex-col items-center gap-2">
+                <button class="action-btn w-14 h-14 flex items-center justify-center text-2xl text-white">↑</button>
+                <span class="text-xs font-medium">Отправить</span>
             </div>
-            <div class="nav-actions">
-                <a href="https://t.me/sy1ka" class="tg-btn" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                    Написать
-                </a>
+            <div class="flex flex-col items-center gap-2">
+                <button class="action-btn w-14 h-14 flex items-center justify-center text-2xl text-white">↓</button>
+                <span class="text-xs font-medium">Получить</span>
             </div>
-            <div class="menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="flex flex-col items-center gap-2">
+                <button class="action-btn w-14 h-14 flex items-center justify-center text-2xl text-white">⇆</button>
+                <span class="text-xs font-medium">Обмен</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <button class="action-btn w-14 h-14 flex items-center justify-center text-2xl text-white">➕</button>
+                <span class="text-xs font-medium">Купить</span>
+            </div>
+        </div>
+
+        <section class="flex-1 bg-gray-50 rounded-t-[32px] p-6 space-y-4 shadow-inner">
+            <div class="flex justify-between items-center text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">
+                <span>Активы</span>
+                <span>Настроить</span>
+            </div>
+
+            <div class="asset-card flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">💎</div>
+                    <div>
+                        <p class="font-bold">Toncoin</p>
+                        <p class="text-xs text-gray-500">$5.42</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold">150.5 TON</p>
+                    <p class="text-xs text-gray-500">$815.71</p>
+                </div>
+            </div>
+
+            <div class="asset-card flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">₮</div>
+                    <div>
+                        <p class="font-bold">Tether</p>
+                        <p class="text-xs text-gray-500">USD₮</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold">424.79</p>
+                    <p class="text-xs text-gray-500">$424.79</p>
+                </div>
+            </div>
+        </section>
+
+        <nav class="h-20 bg-white border-t border-gray-100 flex items-center justify-around px-4">
+            <div class="flex flex-col items-center text-blue-600">
+                <span class="text-xl">💎</span>
+                <span class="text-[10px] font-bold">Кошелек</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <span class="text-xl">🧭</span>
+                <span class="text-[10px] font-bold">Браузер</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <span class="text-xl">🔄</span>
+                <span class="text-[10px] font-bold">Стейкинг</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <span class="text-xl">📜</span>
+                <span class="text-[10px] font-bold">История</span>
             </div>
         </nav>
-    </header>
+    </div>
 
-    <!-- Герой -->
-    <section id="home" class="hero">
-        <div class="hero-bg">
-            <div class="bg-shape shape-1"></div>
-            <div class="bg-shape shape-2"></div>
-            <div class="bg-shape shape-3"></div>
-        </div>
-        
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span>🚀 Доступен для проектов</span>
-                </div>
-                
-                <h1 class="hero-title">
-                    <span class="title-line">Сайты, которые</span>
-                    <span class="title-line">
-                        <span class="typing-text">впечатляют</span>
-                        <span class="cursor-blinking">|</span>
-                    </span>
-                </h1>
-                
-                <p class="hero-description">
-                    Создаю цифровые продукты с характером. Не просто код — а опыт, 
-                    который цепляет и решает бизнес-задачи.
-                </p>
-                
-                <div class="hero-actions">
-                    <a href="#works" class="btn btn-primary">
-                        <span>Смотреть работы</span>
-                        <i class="fas fa-arrow-down"></i>
-                    </a>
-                    <a href="https://t.me/sy1ka" class="btn btn-secondary" target="_blank">
-                        <i class="fab fa-telegram"></i>
-                        Обсудить проект
-                    </a>
-                </div>
-                
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-number">10+</div>
-                        <div class="stat-label">Проектов</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Качество</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-number">7дн</div>
-                        <div class="stat-label">Сроки</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <div class="card-content">
-                        <i class="fas fa-code"></i>
-                        <span>Чистый код</span>
-                    </div>
-                </div>
-                <div class="floating-card card-2">
-                    <div class="card-content">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>Адаптив</span>
-                    </div>
-                </div>
-                <div class="floating-card card-3">
-                    <div class="card-content">
-                        <i class="fas fa-bolt"></i>
-                        <span>Скорость</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Работы -->
-    <section id="works" class="works">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Избранные работы</h2>
-                <p class="section-subtitle">Проекты, которыми горжусь</p>
-            </div>
-            
-            <div class="works-grid">
-                <div class="work-card">
-                    <div class="work-image">
-                        <div class="work-badge">Новый</div>
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23667eea'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EИнтернет-магазин%3C/text%3E%3C/svg%3E" alt="Интернет-магазин">
-                    </div>
-                    <div class="work-content">
-                        <h3>E-commerce платформа</h3>
-                        <p>Многостраничный магазин с корзиной и фильтрами</p>
-                        <div class="work-tech">
-                            <span>HTML/CSS</span>
-                            <span>JavaScript</span>
-                            <span>API</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-image">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23ff6b6b'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EКорпоративный сайт%3C/text%3E%3C/svg%3E" alt="Корпоративный сайт">
-                    </div>
-                    <div class="work-content">
-                        <h3>Корпоративный портал</h3>
-                        <p>Сайт для строительной компании с каталогом услуг</p>
-                        <div class="work-tech">
-                            <span>React</span>
-                            <span>Node.js</span>
-                            <span>MongoDB</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="work-card">
-                    <div class="work-image">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%234ecdc4'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='24' fill='white' text-anchor='middle' dominant-baseline='middle'%3EЛендинг%3C/text%3E%3C/svg%3E" alt="Лендинг">
-                    </div>
-                    <div class="work-content">
-                        <h3>Продающий лендинг</h3>
-                        <p>Высококонверсионная страница для IT-компании</p>
-                        <div class="work-tech">
-                            <span>Vue.js</span>
-                            <span>GSAP</span>
-                            <span>SEO</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Стек -->
-    <section id="stack" class="stack">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Технологии</h2>
-                <p class="section-subtitle">Инструменты, которые использую</p>
-            </div>
-            
-            <div class="stack-grid">
-                <div class="tech-category">
-                    <h3>Frontend</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">HTML5</div>
-                        <div class="tech-item">CSS3/SCSS</div>
-                        <div class="tech-item">JavaScript</div>
-                        <div class="tech-item">React</div>
-                        <div class="tech-item">Vue.js</div>
-                    </div>
-                </div>
-                
-                <div class="tech-category">
-                    <h3>Backend</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">Node.js</div>
-                        <div class="tech-item">Python</div>
-                        <div class="tech-item">MongoDB</div>
-                        <div class="tech-item">PostgreSQL</div>
-                    </div>
-                </div>
-                
-                <div class="tech-category">
-                    <h3>Инструменты</h3>
-                    <div class="tech-list">
-                        <div class="tech-item">Git</div>
-                        <div class="tech-item">Figma</div>
-                        <div class="tech-item">Webpack</div>
-                        <div class="tech-item">Docker</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Контакты -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Готов к новым вызовам</h2>
-                    <p>Есть проект? Давайте обсудим и сделаем что-то крутое вместе!</p>
-                    
-                    <div class="contact-links">
-                        <a href="https://t.me/sy1ka" class="contact-link" target="_blank">
-                            <i class="fab fa-telegram"></i>
-                            <span>@sy1ka</span>
-                        </a>
-                        <a href="mailto:hello@sy1ka.ru" class="contact-link">
-                            <i class="fas fa-envelope"></i>
-                            <span>hello@sy1ka.ru</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="contact-form">
-                    <form id="project-form">
-                        <div class="form-group">
-                            <input type="text" placeholder="Как к вам обращаться?" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" placeholder="Email для связи" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea placeholder="Расскажите о проекте..." rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <span>Обсудить проект</span>
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Футер -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span>SY1KA</span>
-                    <div class="logo-dot"></div>
-                </div>
-                <p>Создаю цифровые продукты с 2024 года</p>
-                <div class="footer-links">
-                    <a href="https://t.me/sy1ka" target="_blank">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-                    <a href="#">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
