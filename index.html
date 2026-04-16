@@ -3,113 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tonkeeper Bento Design</title>
+    <title>Tonkeeper Full Functional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background-color: #0c0e11; 
-            color: #ffffff; 
-            font-family: 'Inter', sans-serif; 
-            -webkit-user-select: none;
-            user-select: none;
-            overflow: hidden; 
-        }
+        body { background-color: #0c0e11; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
         .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; display: flex; flex-direction: column; }
         .bg-bento { background-color: #171a1f; }
         .bg-action { background-color: #2c3138; }
-        .text-bento { color: #8e959f; }
-        .ton-blue { background-color: #007aff; }
+        
+        /* Экраны */
+        .screen { display: none; flex-direction: column; height: 100%; padding-bottom: 80px; }
+        .screen.active { display: flex; }
 
-        /* Нижний навигационный блок */
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 80px; background-color: #0c0e11; border-top: 1px solid #1a1e23; display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .bottom-nav button { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; text-decoration: none; }
-        .bottom-nav button.active { color: #007aff; }
-        .bottom-nav svg { width: 22px; height: 22px; transition: color 0.2s; }
+        /* Модалки */
+        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(15px); }
+        .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 32px 32px 0 0; padding: 24px; background: #1c1c1e; border-top: 1px solid #333; }
 
-        button:active { transform: scale(0.96); transition: 0.1s; }
+        /* Навигация */
+        .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 80px; background: #0c0e11; border-top: 1px solid #1a1e23; display: flex; z-index: 1000; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; cursor: pointer; }
+        .nav-item.active { color: #007aff; }
+
+        .scroller { overflow-y: auto; scrollbar-width: none; }
         .scroller::-webkit-scrollbar { display: none; }
+        button:active { transform: scale(0.96); }
     </style>
 </head>
-<body class="flex items-center justify-center">
+<body>
 
-    <div class="app-container w-full relative">
+    <div class="app-container">
         
-        <header class="p-6 text-center z-10">
-            <div class="flex justify-between items-center mb-10">
-                <button class="w-11 h-11 rounded-full bg-bento flex items-center justify-center text-xl">👤</button>
-                <button class="bg-bento rounded-full px-4 py-2 flex items-center gap-1.5 shadow-md">
-                    <span class="text-xs font-semibold tracking-wider">WALLET</span>
-                    <span class="text-[9px] opacity-40">▼</span>
-                </button>
-                <button class="w-11 h-11 rounded-full bg-bento flex items-center justify-center text-lg">🔍</button>
-            </div>
-        </header>
+        <div id="wallet-screen" class="screen active">
+            <header class="p-6 flex justify-between items-center">
+                <button onclick="alert('Settings')" class="w-10 h-10 rounded-full bg-bento flex items-center justify-center">👤</button>
+                <div class="bg-bento px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase">Wallet ▼</div>
+                <button class="w-10 h-10 rounded-full bg-bento flex items-center justify-center">🔍</button>
+            </header>
 
-        <main class="flex-1 overflow-y-auto scroller px-6 pb-[100px]">
-            
-            <div class="text-center mb-10">
-                <p class="text-[10px] font-black uppercase tracking-[0.15em] opacity-40 mb-2">Total Balance</p>
-                <h1 class="text-[48px] font-black tracking-tighter mb-8">$ <span id="main-balance">2,313.24</span></h1>
-                <div class="flex justify-center gap-8 mb-10">
-                    <button class="w-[72px] h-[72px] rounded-[24px] bg-action flex items-center justify-center text-3xl shadow-lg">↑</button>
-                    <button class="w-[72px] h-[72px] rounded-[24px] bg-action flex items-center justify-center text-3xl shadow-lg">⇆</button>
-                    <button class="w-[72px] h-[72px] rounded-[24px] bg-action flex items-center justify-center text-3xl shadow-lg">🔄</button>
+            <main class="flex-1 scroller px-6">
+                <div class="text-center py-8">
+                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest mb-2">Total Balance</p>
+                    <h1 class="text-5xl font-black tracking-tighter mb-8">$ <span id="main-balance">2,313.24</span></h1>
+                    <div class="flex justify-center gap-6">
+                        <button onclick="alert('Вывести')" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">↑</div>
+                            <span class="text-[10px] font-bold opacity-50 uppercase">Вывести</span>
+                        </button>
+                        <button onclick="alert('Пополнить')" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">↓</div>
+                            <span class="text-[10px] font-bold opacity-50 uppercase">Пополнить</span>
+                        </button>
+                        <button onclick="openModal('swap-modal')" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">⇆</div>
+                            <span class="text-[10px] font-bold opacity-50 uppercase">Обменять</span>
+                        </button>
+                    </div>
                 </div>
-                <button class="text-[11px] font-bold text-blue-500 uppercase tracking-wider bg-blue-500/10 px-4 py-1.5 rounded-full shadow">ПОПОЛНИТЬ</button>
-            </div>
 
-            <section class="mb-10">
-                <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.15em] mb-4">Your Assets</p>
-                <div class="bg-bento rounded-[32px] p-6 space-y-4 shadow-inner border border-white/5">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl shadow-lg">💎</div>
-                            <div>
-                                <p class="font-bold text-base">Toncoin</p>
-                                <p class="text-[11px] opacity-40">$5.42</p>
+                <div class="space-y-4 mb-6">
+                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest">Завершить установку</p>
+                    <div class="bg-bento rounded-[28px] p-2 space-y-1">
+                        <button onclick="openModal('key-modal')" class="w-full flex items-center justify-between p-4 hover:bg-white/5 rounded-2xl transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-yellow-500/10 rounded-full flex items-center justify-center text-lg">🔑</div>
+                                <div class="text-left"><p class="text-sm font-bold">Сохраните ключ</p><p class="text-[10px] opacity-40">Без него доступ не вернуть</p></div>
                             </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-black text-xl tracking-tight"><span id="ton-count">477,5</span> TON</p>
-                        </div>
+                            <span class="opacity-20 text-xs">▶</span>
+                        </button>
+                        <div class="h-[1px] bg-white/5 mx-4"></div>
+                        <button onclick="openModal('tour-modal')" class="w-full flex items-center justify-between p-4 hover:bg-white/5 rounded-2xl transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center text-lg">📚</div>
+                                <div class="text-left"><p class="text-sm font-bold">Возможности</p><p class="text-[10px] opacity-40">Узнайте, что умеет кошелек</p></div>
+                            </div>
+                            <span class="opacity-20 text-xs">▶</span>
+                        </button>
                     </div>
                 </div>
-            </section>
 
-            <div class="bg-bento rounded-[32px] p-6 mb-10 border border-white/5 shadow-inner">
-                <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.15em] mb-4">Complete Setup</p>
-                <button class="w-full text-left flex items-center justify-between gap-4 p-4 bg-white/5 rounded-2xl active:bg-white/10">
-                    <div class="flex items-center gap-3">
-                        <div class="text-3xl text-blue-400">🔑</div>
-                        <div><p class="font-bold text-sm">Save your secret key</p><p class="text-[10px] opacity-40 mt-1">Recovery is impossible without the key</p></div>
+                <div class="bg-bento rounded-[28px] p-5 flex justify-between items-center shadow-lg border border-white/5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl shadow-lg font-bold">💎</div>
+                        <div><p class="font-bold">TON</p><p class="text-[11px] text-green-500">$5.42 (+2.1%)</p></div>
                     </div>
-                    <span class="text-bento text-xs">▼</span>
-                </button>
-            </div>
+                    <p class="font-black text-xl tracking-tight">477.5 TON</p>
+                </div>
+            </main>
+        </div>
 
-        </main>
+        <div id="history-screen" class="screen px-6">
+            <h1 class="text-2xl font-black py-6">История</h1>
+            <div class="flex-1 scroller space-y-4">
+                <div class="flex justify-between items-center p-4 bg-bento rounded-2xl">
+                    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center">↓</div><div><p class="font-bold text-sm">Получено</p><p class="text-[10px] opacity-40">Вчера, 14:20</p></div></div>
+                    <p class="text-green-500 font-bold">+12.5 TON</p>
+                </div>
+                <div class="flex justify-between items-center p-4 bg-bento rounded-2xl">
+                    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center">↑</div><div><p class="font-bold text-sm">Отправлено</p><p class="text-[10px] opacity-40">12 Апр, 09:11</p></div></div>
+                    <p class="opacity-60 font-bold">-2.0 TON</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="swap-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="text-xl font-black mb-6 text-center">Обмен монет</h2>
+                <div class="space-y-2">
+                    <div class="bg-black p-4 rounded-2xl border border-white/5">
+                        <p class="text-[10px] opacity-40 mb-2 uppercase font-bold">Продаете</p>
+                        <div class="flex justify-between items-center"><input type="number" value="10" class="bg-transparent text-2xl font-black outline-none w-1/2"> <span class="font-bold">💎 TON</span></div>
+                    </div>
+                    <div class="flex justify-center -my-2 z-10 relative"><div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center border-4 border-[#1c1c1e]">↓</div></div>
+                    <div class="bg-black p-4 rounded-2xl border border-white/5">
+                        <p class="text-[10px] opacity-40 mb-2 uppercase font-bold">Получаете</p>
+                        <div class="flex justify-between items-center text-2xl font-black"><span>54.20</span> <span class="text-green-500">₮ USDT</span></div>
+                    </div>
+                </div>
+                <button onclick="alert('Обмен завершен!'); closeModal('swap-modal')" class="w-full mt-6 bg-blue-600 py-4 rounded-2xl font-black shadow-xl">ПОДТВЕРДИТЬ</button>
+                <button onclick="closeModal('swap-modal')" class="w-full mt-2 opacity-30 py-2 text-xs uppercase font-bold">Отмена</button>
+            </div>
+        </div>
+
+        <div id="key-modal" class="modal">
+            <div class="modal-content text-center">
+                <div class="text-4xl mb-4">🔐</div>
+                <h2 class="text-xl font-black mb-2">Ваш секретный ключ</h2>
+                <p class="text-sm opacity-50 mb-6">Запишите эти 24 слова на бумагу. Никогда не делайте скриншот.</p>
+                <div class="bg-black p-6 rounded-2xl border border-dashed border-blue-500/50 mb-6 font-mono text-xs text-blue-400">apple banana cherry ... zebra</div>
+                <button onclick="closeModal('key-modal')" class="w-full bg-white text-black py-4 rounded-2xl font-black">Я ЗАПИСАЛ</button>
+            </div>
+        </div>
 
         <nav class="bottom-nav">
-            <button class="active">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 11.1c.3 0 .6-.1.8-.3L11.2 4c.4-.4 1.1-.4 1.5 0L19 10.8c.2.2.5.3.8.3.6 0 1-.4 1-1 0-.3-.1-.5-.3-.7L13.5 2.2C12.7 1.4 11.3 1.4 10.5 2.2L3.3 9.1c-.2.2-.3.4-.3.7 0 .6.4 1 1 1.1zm1 1h14c1.1 0 2 .9 2 2v6c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6c0-1.1.9-2 2-2z"/></svg>
-                <span class="text-[9px] font-bold uppercase tracking-wider">Кошелёк</span>
-            </button>
-            <button onclick="alert('История')">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l.8-4.73L5.13 9.92l4.74-.69L12 4.9l2.13 4.32 4.74.69-3.44 3.35.8 4.74z"/></svg>
-                <span class="text-[9px] font-bold uppercase tracking-wider">История</span>
-            </button>
-            <button onclick="alert('Swap')">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.5c0 .28-.22.5-.5.5s-.5-.22-.5-.5V14h-2.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5H11v-1.5h-.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h2.5c.28 0 .5.22.5.5s-.22.5-.5.5H12V13h1.5c.28 0 .5.22.5.5s-.22.5-.5.5H13v1.5h.5c.28 0 .5.22.5.5s-.22.5-.5.5zm1.5-6.5h-5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h5c.28 0 .5.22.5.5s-.22.5-.5.5z"/></svg>
-                <span class="text-[9px] font-bold uppercase tracking-wider">Браузер</span>
-            </button>
-            <button onclick="alert('Настройки')">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm0-4h-2v-2c0-.55.45-1 1-1s1 .45 1 1v2zm0-4h-2v-2c0-.55.45-1 1-1s1 .45 1 1v2zm0-4h-2V6c0-.55.45-1 1-1s1 .45 1 1v2z"/></svg>
-                <span class="text-[9px] font-bold uppercase tracking-wider">Ещё</span>
-            </button>
+            <div onclick="showScreen('wallet-screen', this)" class="nav-item active">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <span class="text-[9px] font-bold uppercase">Кошелек</span>
+            </div>
+            <div onclick="showScreen('history-screen', this)" class="nav-item">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                <span class="text-[9px] font-bold uppercase">История</span>
+            </div>
+            <div onclick="alert('Браузер DApps скоро будет!')" class="nav-item">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                <span class="text-[9px] font-bold uppercase">Браузер</span>
+            </div>
+            <div onclick="alert('Коллекции пусты')" class="nav-item">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16V4H4v2zm0 5h16V9H4v2zm0 5h16v-2H4v2zm0 4h16v-2H4v2z"/></svg>
+                <span class="text-[9px] font-bold uppercase">Коллекции</span>
+            </div>
         </nav>
 
     </div>
 
+    <script>
+        function showScreen(screenId, navEl) {
+            // Скрыть все экраны
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            // Показать нужный
+            document.getElementById(screenId).classList.add('active');
+            // Обновить навигацию
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            navEl.classList.add('active');
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
 </body>
 </html>
