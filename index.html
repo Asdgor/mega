@@ -3,158 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tonkeeper Ultra Pro</title>
+    <title>Tonkeeper Bento Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0c0e11; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
-        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; overflow: hidden; background: #0c0e11; }
+        body { background-color: #0c0e11; color: #fff; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
+        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; background: #0c0e11; }
         
         /* Цвета Bento */
         .bg-bento { background-color: #171a1f; }
         .bg-action { background-color: #2c3138; }
         
-        /* Навигация */
-        .screen { display: none; height: calc(100vh - 80px); flex-direction: column; overflow-y: auto; scrollbar-width: none; }
+        /* Скролл для мерчантов */
+        .p2p-scroll { height: calc(100vh - 160px); overflow-y: auto; scrollbar-width: none; }
+        .p2p-scroll::-webkit-scrollbar { display: none; }
+
+        /* Экраны и слои */
+        .screen { position: absolute; inset: 0; display: none; flex-direction: column; background: #0c0e11; z-index: 10; padding-bottom: 85px; }
         .screen.active { display: flex; }
-        .screen::-webkit-scrollbar { display: none; }
+        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(10px); }
+        .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 30px 30px 0 0; padding: 25px; background: #1c1c1e; border-top: 1px solid #333; }
 
-        /* Модалки */
-        .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(15px); }
-        .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 32px 32px 0 0; padding: 24px; background: #1c1c1e; border-top: 1px solid #333; }
-
-        /* Кастомный P2P экран */
-        #p2p-screen { z-index: 1500; background: #0c0e11; }
-        
+        /* Нижнее меню (всегда сверху) */
         .nav-bar { position: absolute; bottom: 0; width: 100%; height: 80px; background: #0c0e11; border-top: 1px solid #1a1e23; display: flex; z-index: 1000; }
-        .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; cursor: pointer; }
-        .nav-btn.active { color: #007aff; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; cursor: pointer; }
+        .nav-item.active { color: #007aff; }
 
-        button:active { transform: scale(0.95); }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
+        button:active { transform: scale(0.95); transition: 0.1s; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         
-        <div id="wallet-screen" class="screen active">
-            <header class="p-6 flex justify-between items-center">
-                <button onclick="openModal('profile-modal')" class="w-10 h-10 rounded-full bg-bento flex items-center justify-center text-blue-400">👤</button>
-                <div class="bg-bento px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase">Wallet ▼</div>
-                <button class="w-10 h-10 rounded-full bg-bento flex items-center justify-center">🔍</button>
-            </header>
-
-            <div class="px-6 pb-20">
-                <div class="text-center py-8">
-                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest mb-2">Total Balance</p>
-                    <h1 class="text-5xl font-black tracking-tighter mb-8 italic">$ <span id="main-balance">2,313.24</span></h1>
-                    <div class="flex justify-center gap-6">
-                        <button onclick="alert('Send Offline')" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">↑</div>
-                            <span class="text-[10px] font-bold opacity-50 uppercase">Вывести</span>
-                        </button>
-                        <button onclick="openP2P()" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">↓</div>
-                            <span class="text-[10px] font-bold opacity-50 uppercase">P2P</span>
-                        </button>
-                        <button onclick="alert('Swap Offline')" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">⇆</div>
-                            <span class="text-[10px] font-bold opacity-50 uppercase">Обмен</span>
-                        </button>
-                    </div>
+        <div id="profile-modal" class="modal">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-black italic">Settings</h2>
+                    <button onclick="closeModal('profile-modal')" class="text-2xl opacity-30">✕</button>
                 </div>
-
-                <div class="space-y-3">
-                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest">Активы</p>
-                    <div class="bg-bento rounded-[28px] p-5 flex justify-between items-center border border-white/5">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl font-bold">💎</div>
-                            <div><p class="font-bold">Toncoin</p><p class="text-[11px] text-green-500">$5.42</p></div>
-                        </div>
-                        <p class="font-black text-xl"><span id="ton-count">477,5</span> TON</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 bg-bento rounded-[28px] p-2 border border-white/5">
-                    <button onclick="openModal('key-modal')" class="w-full flex items-center justify-between p-4 active:bg-white/5 rounded-2xl transition">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-yellow-500/10 rounded-full flex items-center justify-center text-lg">🔑</div>
-                            <div class="text-left"><p class="text-sm font-bold">Сохраните ключ</p><p class="text-[10px] opacity-40">24 слова для доступа</p></div>
-                        </div>
-                        <span class="opacity-20">▶</span>
-                    </button>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white/5 rounded-2xl flex justify-between"><span>Currency</span><span class="text-blue-500 font-bold">USD</span></div>
+                    <div class="p-4 bg-white/5 rounded-2xl flex justify-between"><span>Theme</span><span>Dark</span></div>
+                    <button class="w-full p-4 bg-red-500/20 text-red-500 font-bold rounded-2xl mt-4">Logout</button>
                 </div>
             </div>
         </div>
 
-        <div id="p2p-screen" class="screen absolute inset-0 !h-full hidden">
+        <div id="wallet-screen" class="screen active">
+            <header class="p-6 flex justify-between items-center">
+                <button onclick="openModal('profile-modal')" class="w-10 h-10 rounded-full bg-bento flex items-center justify-center text-blue-400 text-lg border border-white/5">👤</button>
+                <div class="bg-bento px-4 py-2 rounded-full text-[10px] font-black tracking-widest opacity-80">WALLET ▼</div>
+                <button class="w-10 h-10 rounded-full bg-bento flex items-center justify-center border border-white/5">🔍</button>
+            </header>
+
+            <main class="flex-1 px-6">
+                <div class="text-center py-10">
+                    <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.2em] mb-2">Total Balance</p>
+                    <h1 class="text-[52px] font-black tracking-tighter mb-10 italic leading-none">$ <span id="main-balance">2,313.24</span></h1>
+                    
+                    <div class="flex justify-center gap-6 mb-12">
+                        <button onclick="alert('Send Offline')" class="flex flex-col items-center gap-2">
+                            <div class="w-16 h-16 bg-action rounded-[24px] flex items-center justify-center text-2xl text-blue-400">↑</div>
+                            <span class="text-[10px] font-black opacity-40 uppercase">Send</span>
+                        </button>
+                        <button onclick="openP2P()" class="flex flex-col items-center gap-2">
+                            <div class="w-16 h-16 bg-action rounded-[24px] flex items-center justify-center text-2xl text-blue-400">⇆</div>
+                            <span class="text-[10px] font-black opacity-40 uppercase">P2P</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-bento rounded-[32px] p-6 border border-white/5 flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl shadow-lg font-bold italic">💎</div>
+                        <div><p class="font-bold text-lg">Toncoin</p><p class="text-[11px] text-green-500 font-bold">$5.42</p></div>
+                    </div>
+                    <p class="font-black text-2xl tracking-tighter"><span id="ton-count">477,5</span> TON</p>
+                </div>
+            </main>
+        </div>
+
+        <div id="p2p-screen" class="screen">
             <div class="p-6 bg-black border-b border-white/5">
                 <div class="flex items-center gap-4 mb-6">
                     <button onclick="closeP2P()" class="text-3xl">←</button>
                     <h1 class="text-2xl font-black italic">P2P Market</h1>
                 </div>
-                <div class="flex gap-6"><button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button><button class="pb-2 opacity-20 font-bold">Sell</button></div>
+                <div class="flex gap-6"><button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button><button class="pb-2 opacity-30 font-bold">Sell</button></div>
             </div>
-            <div class="p-4 space-y-3 flex-1 overflow-y-auto">
-                <div id="merchant-list"></div>
-            </div>
-        </div>
-
-        <div id="history-screen" class="screen px-6">
-            <h1 class="text-2xl font-black py-6">История</h1>
-            <div class="space-y-4" id="history-list">
-                <div class="p-4 bg-bento rounded-2xl flex justify-between items-center">
-                    <div class="flex gap-3 items-center"><div class="text-green-500 font-bold">↓</div><div><p class="font-bold text-sm">Получено</p><p class="text-[10px] opacity-40">Сейчас</p></div></div>
-                    <p class="text-green-500 font-bold">+0.00 TON</p>
+            
+            <div class="p2p-scroll p-4 space-y-3" id="merchants">
                 </div>
-            </div>
         </div>
 
         <div id="bank-modal" class="modal">
             <div class="modal-content">
-                <h2 class="text-xl font-black mb-6 text-center">Способ оплаты</h2>
+                <h2 class="text-xl font-black mb-6 text-center italic">Payment Method</h2>
                 <div class="space-y-3">
-                    <button onclick="alert('Offline')" class="w-full p-5 bg-white/5 rounded-2xl text-left font-bold flex justify-between"><span>📲 СБП</span><span class="opacity-20 italic text-xs">OFFLINE</span></button>
-                    <button onclick="openPinModal()" class="w-full p-5 bg-blue-600 rounded-2xl text-left font-bold flex justify-between items-center shadow-lg">
-                        <span>💳 Bank Card (Unlimited)</span>
+                    <button onclick="alert('Offline')" class="w-full p-5 bg-white/5 rounded-2xl text-left font-bold flex justify-between items-center"><span>📲 СБП</span><span class="text-[10px] opacity-20">OFFLINE</span></button>
+                    <button onclick="openPinModal()" class="w-full p-5 bg-blue-600 rounded-2xl text-left font-bold flex justify-between items-center">
+                        <span>💳 Bank Card</span>
                         <span class="text-[10px] bg-black/20 px-2 py-1 rounded">FAST</span>
                     </button>
                 </div>
-                <button onclick="closeModal('bank-modal')" class="w-full mt-6 opacity-30 font-bold text-[10px]">ОТМЕНА</button>
+                <button onclick="closeModal('bank-modal')" class="w-full mt-4 py-2 opacity-30 font-bold uppercase text-[10px]">Cancel</button>
             </div>
         </div>
 
         <div id="pin-modal" class="modal">
             <div class="modal-content text-center">
-                <div class="mb-8"><div class="text-4xl mb-4">🔐</div><h2 class="text-xl font-black italic">Security Check</h2><p class="text-xs opacity-40">Введите 6-значный код карты</p></div>
+                <div class="mb-8"><div class="text-4xl mb-4">🔐</div><h2 class="text-xl font-black italic">Security Code</h2><p class="text-xs opacity-40">Enter 6-digit card pin</p></div>
                 <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="w-full p-6 rounded-2xl text-center text-4xl tracking-[0.5em] mb-8 bg-black border border-white/10 outline-none font-black text-blue-500">
-                <button onclick="processPayment()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xl shadow-2xl">CONFIRM PAY</button>
-                <button onclick="closeModal('pin-modal')" class="w-full mt-4 opacity-30">Back</button>
-            </div>
-        </div>
-
-        <div id="profile-modal" class="modal">
-            <div class="modal-content">
-                <h2 class="text-xl font-black mb-6">Settings</h2>
-                <div class="space-y-4">
-                    <div class="p-4 bg-white/5 rounded-xl flex justify-between"><span>Currency</span><span class="text-blue-500">USD</span></div>
-                    <div class="p-4 bg-white/5 rounded-xl flex justify-between"><span>Language</span><span>RU</span></div>
-                    <div class="p-4 bg-red-500/10 text-red-500 rounded-xl text-center font-bold mt-10">Logout</div>
-                </div>
-                <button onclick="closeModal('profile-modal')" class="w-full mt-6 opacity-30 font-bold uppercase text-[10px]">Close</button>
+                <button onclick="confirmTransaction()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xl shadow-2xl">CONFIRM</button>
             </div>
         </div>
 
         <nav class="nav-bar">
-            <div onclick="showTab('wallet-screen', this)" class="nav-btn active">
-                <span class="text-xl">💼</span><span class="text-[9px] font-bold uppercase">Wallet</span>
+            <div onclick="switchTab('wallet-screen', this)" class="nav-item active">
+                <span class="text-2xl">💼</span><span class="text-[9px] font-black uppercase">Wallet</span>
             </div>
-            <div onclick="showTab('history-screen', this)" class="nav-btn">
-                <span class="text-xl">🕒</span><span class="text-[9px] font-bold uppercase">History</span>
+            <div onclick="alert('Empty History')" class="nav-item">
+                <span class="text-2xl">🕒</span><span class="text-[9px] font-black uppercase">History</span>
             </div>
-            <div onclick="alert('DApps Browser')" class="nav-btn">
-                <span class="text-xl">🧭</span><span class="text-[9px] font-bold uppercase">Browser</span>
+            <div onclick="alert('Coming Soon')" class="nav-item">
+                <span class="text-2xl">🧭</span><span class="text-[9px] font-black uppercase">Browser</span>
             </div>
         </nav>
 
@@ -163,36 +136,35 @@
     <script>
         let balance = 2313.24;
         let tonCount = 477.5;
-        let pendingTon = 0;
+        let currentPurchase = 0;
 
-        // Генерация мерчантов
-        const mNames = ['Merchant_God', 'Shark_Trade', 'Ton_Master', 'Bull_Crypto', 'Zero_Fee', 'Fast_Swap'];
-        const mList = document.getElementById('merchant-list');
-        mNames.forEach((name, i) => {
-            const ton = (10 + i * 15);
-            mList.innerHTML += `
+        // Генерация мерчантов (теперь их много и они скроллят)
+        const merchants = ['Merchant_God', 'Crypto_King', 'Ton_Shark', 'Sber_Fast', 'Easy_Swap', 'Bull_Trader'];
+        const mContainer = document.getElementById('merchants');
+        merchants.forEach((name, i) => {
+            const amount = 20 + (i * 15);
+            mContainer.innerHTML += `
                 <div class="p-5 bg-bento rounded-[28px] border border-white/5 flex justify-between items-end">
-                    <div><span class="font-bold text-blue-400 block mb-1 text-sm">${name} 👑</span><p class="text-2xl font-black italic">${502 + i}.40 ₽</p><p class="text-[10px] opacity-30 mt-1">Limit: 10 - 100k ₽</p></div>
-                    <button onclick="buyBtn(${ton})" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg">BUY</button>
+                    <div><span class="font-bold text-blue-400 block mb-1 text-sm">${name} 👑</span><p class="text-2xl font-black italic">${502 + i}.40 ₽</p><p class="text-[10px] opacity-30">Limit: 100 - ∞ ₽</p></div>
+                    <button onclick="buyFlow(${amount})" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg">BUY</button>
                 </div>`;
         });
 
-        // Навигация
-        function showTab(id, el) {
+        function switchTab(id, el) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
         }
 
-        function openP2P() { document.getElementById('p2p-screen').classList.remove('hidden'); }
-        function closeP2P() { document.getElementById('p2p-screen').classList.add('hidden'); }
+        function openP2P() { document.getElementById('p2p-screen').classList.add('active'); }
+        function closeP2P() { document.getElementById('p2p-screen').classList.remove('active'); }
         
         function openModal(id) { document.getElementById(id).style.display = 'block'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function buyBtn(amt) {
-            pendingTon = amt;
+        function buyFlow(amt) {
+            currentPurchase = amt;
             openModal('bank-modal');
         }
 
@@ -201,30 +173,17 @@
             openModal('pin-modal');
         }
 
-        function processPayment() {
-            const pin = document.getElementById('pin-input').value;
-            if (pin === "585823") {
-                tonCount += pendingTon;
-                balance += (pendingTon * 5.42);
-                updateUI(pendingTon);
-                alert(`SUCCESS! Received ${pendingTon} TON`);
+        function confirmTransaction() {
+            if(document.getElementById('pin-input').value === "585823") {
+                tonCount += currentPurchase;
+                balance += (currentPurchase * 5.42);
+                document.getElementById('main-balance').innerText = balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+                document.getElementById('ton-count').innerText = tonCount.toLocaleString('ru-RU').replace('.', ',');
+                alert(`Successfully bought ${currentPurchase} TON!`);
                 closeModal('pin-modal');
                 closeP2P();
-            } else { alert("WRONG PIN"); }
+            } else { alert("Wrong PIN"); }
             document.getElementById('pin-input').value = "";
-        }
-
-        function updateUI(added) {
-            document.getElementById('main-balance').innerText = balance.toLocaleString('en-US', {minimumFractionDigits: 2});
-            document.getElementById('ton-count').innerText = tonCount.toLocaleString('ru-RU').replace('.', ',');
-            
-            // Добавляем в историю
-            const hList = document.getElementById('history-list');
-            hList.innerHTML = `
-                <div class="p-4 bg-bento rounded-2xl flex justify-between items-center animate-pulse">
-                    <div class="flex gap-3 items-center"><div class="text-green-500 font-bold">↓</div><div><p class="font-bold text-sm">P2P Purchase</p><p class="text-[10px] opacity-40">Just now</p></div></div>
-                    <p class="text-green-500 font-bold">+${added} TON</p>
-                </div>` + hList.innerHTML;
         }
     </script>
 </body>
