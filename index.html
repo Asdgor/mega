@@ -3,31 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tonkeeper Full Functional</title>
+    <title>Tonkeeper Ultra Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0c0e11; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; display: flex; flex-direction: column; }
+        body { background-color: #0c0e11; color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
+        .app-container { max-width: 400px; margin: 0 auto; height: 100vh; position: relative; overflow: hidden; background: #0c0e11; }
+        
+        /* Цвета Bento */
         .bg-bento { background-color: #171a1f; }
         .bg-action { background-color: #2c3138; }
         
-        /* Экраны */
-        .screen { display: none; flex-direction: column; height: 100%; padding-bottom: 80px; }
+        /* Навигация */
+        .screen { display: none; height: calc(100vh - 80px); flex-direction: column; overflow-y: auto; scrollbar-width: none; }
         .screen.active { display: flex; }
+        .screen::-webkit-scrollbar { display: none; }
 
         /* Модалки */
         .modal { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(15px); }
         .modal-content { position: absolute; bottom: 0; width: 100%; border-radius: 32px 32px 0 0; padding: 24px; background: #1c1c1e; border-top: 1px solid #333; }
 
-        /* Навигация */
-        .bottom-nav { position: absolute; bottom: 0; width: 100%; height: 80px; background: #0c0e11; border-top: 1px solid #1a1e23; display: flex; z-index: 1000; }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; cursor: pointer; }
-        .nav-item.active { color: #007aff; }
+        /* Кастомный P2P экран */
+        #p2p-screen { z-index: 1500; background: #0c0e11; }
+        
+        .nav-bar { position: absolute; bottom: 0; width: 100%; height: 80px; background: #0c0e11; border-top: 1px solid #1a1e23; display: flex; z-index: 1000; }
+        .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #5c626e; cursor: pointer; }
+        .nav-btn.active { color: #007aff; }
 
-        .scroller { overflow-y: auto; scrollbar-width: none; }
-        .scroller::-webkit-scrollbar { display: none; }
-        button:active { transform: scale(0.96); }
+        button:active { transform: scale(0.95); }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
     </style>
 </head>
 <body>
@@ -36,139 +40,192 @@
         
         <div id="wallet-screen" class="screen active">
             <header class="p-6 flex justify-between items-center">
-                <button onclick="alert('Settings')" class="w-10 h-10 rounded-full bg-bento flex items-center justify-center">👤</button>
+                <button onclick="openModal('profile-modal')" class="w-10 h-10 rounded-full bg-bento flex items-center justify-center text-blue-400">👤</button>
                 <div class="bg-bento px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase">Wallet ▼</div>
                 <button class="w-10 h-10 rounded-full bg-bento flex items-center justify-center">🔍</button>
             </header>
 
-            <main class="flex-1 scroller px-6">
+            <div class="px-6 pb-20">
                 <div class="text-center py-8">
                     <p class="text-[10px] font-black opacity-30 uppercase tracking-widest mb-2">Total Balance</p>
-                    <h1 class="text-5xl font-black tracking-tighter mb-8">$ <span id="main-balance">2,313.24</span></h1>
+                    <h1 class="text-5xl font-black tracking-tighter mb-8 italic">$ <span id="main-balance">2,313.24</span></h1>
                     <div class="flex justify-center gap-6">
-                        <button onclick="alert('Вывести')" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">↑</div>
+                        <button onclick="alert('Send Offline')" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">↑</div>
                             <span class="text-[10px] font-bold opacity-50 uppercase">Вывести</span>
                         </button>
-                        <button onclick="alert('Пополнить')" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">↓</div>
-                            <span class="text-[10px] font-bold opacity-50 uppercase">Пополнить</span>
+                        <button onclick="openP2P()" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">↓</div>
+                            <span class="text-[10px] font-bold opacity-50 uppercase">P2P</span>
                         </button>
-                        <button onclick="openModal('swap-modal')" class="flex flex-col items-center gap-2">
-                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl">⇆</div>
-                            <span class="text-[10px] font-bold opacity-50 uppercase">Обменять</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="space-y-4 mb-6">
-                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest">Завершить установку</p>
-                    <div class="bg-bento rounded-[28px] p-2 space-y-1">
-                        <button onclick="openModal('key-modal')" class="w-full flex items-center justify-between p-4 hover:bg-white/5 rounded-2xl transition">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-yellow-500/10 rounded-full flex items-center justify-center text-lg">🔑</div>
-                                <div class="text-left"><p class="text-sm font-bold">Сохраните ключ</p><p class="text-[10px] opacity-40">Без него доступ не вернуть</p></div>
-                            </div>
-                            <span class="opacity-20 text-xs">▶</span>
-                        </button>
-                        <div class="h-[1px] bg-white/5 mx-4"></div>
-                        <button onclick="openModal('tour-modal')" class="w-full flex items-center justify-between p-4 hover:bg-white/5 rounded-2xl transition">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-purple-500/10 rounded-full flex items-center justify-center text-lg">📚</div>
-                                <div class="text-left"><p class="text-sm font-bold">Возможности</p><p class="text-[10px] opacity-40">Узнайте, что умеет кошелек</p></div>
-                            </div>
-                            <span class="opacity-20 text-xs">▶</span>
+                        <button onclick="alert('Swap Offline')" class="flex flex-col items-center gap-2">
+                            <div class="w-14 h-14 bg-action rounded-2xl flex items-center justify-center text-xl text-blue-400">⇆</div>
+                            <span class="text-[10px] font-bold opacity-50 uppercase">Обмен</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-bento rounded-[28px] p-5 flex justify-between items-center shadow-lg border border-white/5">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl shadow-lg font-bold">💎</div>
-                        <div><p class="font-bold">TON</p><p class="text-[11px] text-green-500">$5.42 (+2.1%)</p></div>
+                <div class="space-y-3">
+                    <p class="text-[10px] font-black opacity-30 uppercase tracking-widest">Активы</p>
+                    <div class="bg-bento rounded-[28px] p-5 flex justify-between items-center border border-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-xl font-bold">💎</div>
+                            <div><p class="font-bold">Toncoin</p><p class="text-[11px] text-green-500">$5.42</p></div>
+                        </div>
+                        <p class="font-black text-xl"><span id="ton-count">477,5</span> TON</p>
                     </div>
-                    <p class="font-black text-xl tracking-tight">477.5 TON</p>
                 </div>
-            </main>
+
+                <div class="mt-8 bg-bento rounded-[28px] p-2 border border-white/5">
+                    <button onclick="openModal('key-modal')" class="w-full flex items-center justify-between p-4 active:bg-white/5 rounded-2xl transition">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-yellow-500/10 rounded-full flex items-center justify-center text-lg">🔑</div>
+                            <div class="text-left"><p class="text-sm font-bold">Сохраните ключ</p><p class="text-[10px] opacity-40">24 слова для доступа</p></div>
+                        </div>
+                        <span class="opacity-20">▶</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="p2p-screen" class="screen absolute inset-0 !h-full hidden">
+            <div class="p-6 bg-black border-b border-white/5">
+                <div class="flex items-center gap-4 mb-6">
+                    <button onclick="closeP2P()" class="text-3xl">←</button>
+                    <h1 class="text-2xl font-black italic">P2P Market</h1>
+                </div>
+                <div class="flex gap-6"><button class="pb-2 border-b-2 border-blue-500 font-bold">Buy</button><button class="pb-2 opacity-20 font-bold">Sell</button></div>
+            </div>
+            <div class="p-4 space-y-3 flex-1 overflow-y-auto">
+                <div id="merchant-list"></div>
+            </div>
         </div>
 
         <div id="history-screen" class="screen px-6">
             <h1 class="text-2xl font-black py-6">История</h1>
-            <div class="flex-1 scroller space-y-4">
-                <div class="flex justify-between items-center p-4 bg-bento rounded-2xl">
-                    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center">↓</div><div><p class="font-bold text-sm">Получено</p><p class="text-[10px] opacity-40">Вчера, 14:20</p></div></div>
-                    <p class="text-green-500 font-bold">+12.5 TON</p>
-                </div>
-                <div class="flex justify-between items-center p-4 bg-bento rounded-2xl">
-                    <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center">↑</div><div><p class="font-bold text-sm">Отправлено</p><p class="text-[10px] opacity-40">12 Апр, 09:11</p></div></div>
-                    <p class="opacity-60 font-bold">-2.0 TON</p>
+            <div class="space-y-4" id="history-list">
+                <div class="p-4 bg-bento rounded-2xl flex justify-between items-center">
+                    <div class="flex gap-3 items-center"><div class="text-green-500 font-bold">↓</div><div><p class="font-bold text-sm">Получено</p><p class="text-[10px] opacity-40">Сейчас</p></div></div>
+                    <p class="text-green-500 font-bold">+0.00 TON</p>
                 </div>
             </div>
         </div>
 
-        <div id="swap-modal" class="modal">
+        <div id="bank-modal" class="modal">
             <div class="modal-content">
-                <h2 class="text-xl font-black mb-6 text-center">Обмен монет</h2>
-                <div class="space-y-2">
-                    <div class="bg-black p-4 rounded-2xl border border-white/5">
-                        <p class="text-[10px] opacity-40 mb-2 uppercase font-bold">Продаете</p>
-                        <div class="flex justify-between items-center"><input type="number" value="10" class="bg-transparent text-2xl font-black outline-none w-1/2"> <span class="font-bold">💎 TON</span></div>
-                    </div>
-                    <div class="flex justify-center -my-2 z-10 relative"><div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center border-4 border-[#1c1c1e]">↓</div></div>
-                    <div class="bg-black p-4 rounded-2xl border border-white/5">
-                        <p class="text-[10px] opacity-40 mb-2 uppercase font-bold">Получаете</p>
-                        <div class="flex justify-between items-center text-2xl font-black"><span>54.20</span> <span class="text-green-500">₮ USDT</span></div>
-                    </div>
+                <h2 class="text-xl font-black mb-6 text-center">Способ оплаты</h2>
+                <div class="space-y-3">
+                    <button onclick="alert('Offline')" class="w-full p-5 bg-white/5 rounded-2xl text-left font-bold flex justify-between"><span>📲 СБП</span><span class="opacity-20 italic text-xs">OFFLINE</span></button>
+                    <button onclick="openPinModal()" class="w-full p-5 bg-blue-600 rounded-2xl text-left font-bold flex justify-between items-center shadow-lg">
+                        <span>💳 Bank Card (Unlimited)</span>
+                        <span class="text-[10px] bg-black/20 px-2 py-1 rounded">FAST</span>
+                    </button>
                 </div>
-                <button onclick="alert('Обмен завершен!'); closeModal('swap-modal')" class="w-full mt-6 bg-blue-600 py-4 rounded-2xl font-black shadow-xl">ПОДТВЕРДИТЬ</button>
-                <button onclick="closeModal('swap-modal')" class="w-full mt-2 opacity-30 py-2 text-xs uppercase font-bold">Отмена</button>
+                <button onclick="closeModal('bank-modal')" class="w-full mt-6 opacity-30 font-bold text-[10px]">ОТМЕНА</button>
             </div>
         </div>
 
-        <div id="key-modal" class="modal">
+        <div id="pin-modal" class="modal">
             <div class="modal-content text-center">
-                <div class="text-4xl mb-4">🔐</div>
-                <h2 class="text-xl font-black mb-2">Ваш секретный ключ</h2>
-                <p class="text-sm opacity-50 mb-6">Запишите эти 24 слова на бумагу. Никогда не делайте скриншот.</p>
-                <div class="bg-black p-6 rounded-2xl border border-dashed border-blue-500/50 mb-6 font-mono text-xs text-blue-400">apple banana cherry ... zebra</div>
-                <button onclick="closeModal('key-modal')" class="w-full bg-white text-black py-4 rounded-2xl font-black">Я ЗАПИСАЛ</button>
+                <div class="mb-8"><div class="text-4xl mb-4">🔐</div><h2 class="text-xl font-black italic">Security Check</h2><p class="text-xs opacity-40">Введите 6-значный код карты</p></div>
+                <input id="pin-input" type="password" maxlength="6" placeholder="••••••" class="w-full p-6 rounded-2xl text-center text-4xl tracking-[0.5em] mb-8 bg-black border border-white/10 outline-none font-black text-blue-500">
+                <button onclick="processPayment()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-xl shadow-2xl">CONFIRM PAY</button>
+                <button onclick="closeModal('pin-modal')" class="w-full mt-4 opacity-30">Back</button>
             </div>
         </div>
 
-        <nav class="bottom-nav">
-            <div onclick="showScreen('wallet-screen', this)" class="nav-item active">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                <span class="text-[9px] font-bold uppercase">Кошелек</span>
+        <div id="profile-modal" class="modal">
+            <div class="modal-content">
+                <h2 class="text-xl font-black mb-6">Settings</h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white/5 rounded-xl flex justify-between"><span>Currency</span><span class="text-blue-500">USD</span></div>
+                    <div class="p-4 bg-white/5 rounded-xl flex justify-between"><span>Language</span><span>RU</span></div>
+                    <div class="p-4 bg-red-500/10 text-red-500 rounded-xl text-center font-bold mt-10">Logout</div>
+                </div>
+                <button onclick="closeModal('profile-modal')" class="w-full mt-6 opacity-30 font-bold uppercase text-[10px]">Close</button>
             </div>
-            <div onclick="showScreen('history-screen', this)" class="nav-item">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-                <span class="text-[9px] font-bold uppercase">История</span>
+        </div>
+
+        <nav class="nav-bar">
+            <div onclick="showTab('wallet-screen', this)" class="nav-btn active">
+                <span class="text-xl">💼</span><span class="text-[9px] font-bold uppercase">Wallet</span>
             </div>
-            <div onclick="alert('Браузер DApps скоро будет!')" class="nav-item">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.47 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                <span class="text-[9px] font-bold uppercase">Браузер</span>
+            <div onclick="showTab('history-screen', this)" class="nav-btn">
+                <span class="text-xl">🕒</span><span class="text-[9px] font-bold uppercase">History</span>
             </div>
-            <div onclick="alert('Коллекции пусты')" class="nav-item">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M4 6h16V4H4v2zm0 5h16V9H4v2zm0 5h16v-2H4v2zm0 4h16v-2H4v2z"/></svg>
-                <span class="text-[9px] font-bold uppercase">Коллекции</span>
+            <div onclick="alert('DApps Browser')" class="nav-btn">
+                <span class="text-xl">🧭</span><span class="text-[9px] font-bold uppercase">Browser</span>
             </div>
         </nav>
 
     </div>
 
     <script>
-        function showScreen(screenId, navEl) {
-            // Скрыть все экраны
+        let balance = 2313.24;
+        let tonCount = 477.5;
+        let pendingTon = 0;
+
+        // Генерация мерчантов
+        const mNames = ['Merchant_God', 'Shark_Trade', 'Ton_Master', 'Bull_Crypto', 'Zero_Fee', 'Fast_Swap'];
+        const mList = document.getElementById('merchant-list');
+        mNames.forEach((name, i) => {
+            const ton = (10 + i * 15);
+            mList.innerHTML += `
+                <div class="p-5 bg-bento rounded-[28px] border border-white/5 flex justify-between items-end">
+                    <div><span class="font-bold text-blue-400 block mb-1 text-sm">${name} 👑</span><p class="text-2xl font-black italic">${502 + i}.40 ₽</p><p class="text-[10px] opacity-30 mt-1">Limit: 10 - 100k ₽</p></div>
+                    <button onclick="buyBtn(${ton})" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-sm shadow-lg">BUY</button>
+                </div>`;
+        });
+
+        // Навигация
+        function showTab(id, el) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            // Показать нужный
-            document.getElementById(screenId).classList.add('active');
-            // Обновить навигацию
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            navEl.classList.add('active');
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
         }
 
+        function openP2P() { document.getElementById('p2p-screen').classList.remove('hidden'); }
+        function closeP2P() { document.getElementById('p2p-screen').classList.add('hidden'); }
+        
         function openModal(id) { document.getElementById(id).style.display = 'block'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function buyBtn(amt) {
+            pendingTon = amt;
+            openModal('bank-modal');
+        }
+
+        function openPinModal() {
+            closeModal('bank-modal');
+            openModal('pin-modal');
+        }
+
+        function processPayment() {
+            const pin = document.getElementById('pin-input').value;
+            if (pin === "585823") {
+                tonCount += pendingTon;
+                balance += (pendingTon * 5.42);
+                updateUI(pendingTon);
+                alert(`SUCCESS! Received ${pendingTon} TON`);
+                closeModal('pin-modal');
+                closeP2P();
+            } else { alert("WRONG PIN"); }
+            document.getElementById('pin-input').value = "";
+        }
+
+        function updateUI(added) {
+            document.getElementById('main-balance').innerText = balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('ton-count').innerText = tonCount.toLocaleString('ru-RU').replace('.', ',');
+            
+            // Добавляем в историю
+            const hList = document.getElementById('history-list');
+            hList.innerHTML = `
+                <div class="p-4 bg-bento rounded-2xl flex justify-between items-center animate-pulse">
+                    <div class="flex gap-3 items-center"><div class="text-green-500 font-bold">↓</div><div><p class="font-bold text-sm">P2P Purchase</p><p class="text-[10px] opacity-40">Just now</p></div></div>
+                    <p class="text-green-500 font-bold">+${added} TON</p>
+                </div>` + hList.innerHTML;
+        }
     </script>
 </body>
 </html>
